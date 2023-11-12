@@ -1,3 +1,18 @@
+"""
+This script extracts CERES footprints from valid terra/aqua passes
+over a region, and separates them into 1D lists of labeled features
+corresponding to each independent swath.
+
+These are stored in the swaths_pkl configured below, which is
+formatted as a list of 2-tuples corresponding to F string labels of
+features and a (D,F) shaped array of D data points (footprints).
+
+The list entries are separated into flyovers with varying numbers
+of valid footprints. Passes with too few valid footprints are
+thresholded by min_footprints
+
+swaths = [ FG1D(labels,data) for labels,data in swaths ]
+"""
 from pprint import pprint as ppt
 import json
 import netCDF4 as nc
@@ -229,23 +244,6 @@ if __name__=="__main__":
             ]
 
     data_dir = Path("data")
-    ceres_files = list(map(data_dir.joinpath, [
-            #"ceres/ceres-ssf_e4a_terra_20170101-20180101_28N-38N_95W-75W.nc",
-            #"ceres/ceres-ssf_e4a_terra_20210101-20220101_28N-38N_95W-75W.nc",
-            "ceres/ceres-ssf_e4a_aqua_20170101-20180101_28N-38N_95W-75W.nc",
-            #"ceres/ceres-ssf_e4a_aqua_20210101-20220101_28N-38N_95W-75W.nc",
-            ]))
-
-
-    swaths_pkl = data_dir.joinpath(
-            #"buffer/terra_ceres_seus_2017.pkl"
-            #"buffer/terra_ceres_seus_2021.pkl"
-            "buffer/aqua_ceres_seus_2017.pkl"
-            #"buffer/aqua_ceres_seus_2021.pkl"
-            )
-
-    year = 2017
-    t0,tf = datetime(year,1,1),datetime(year,12,31,23,59,59,999999)
     ## Upper bound on sza to restrict daytime pixels
     ub_sza = 90
     ## Upper bound on viewing zenith angle (MODIS FOV is like 45)
@@ -254,67 +252,72 @@ if __name__=="__main__":
     lb_swath_interval = 300
     ## maximum amount of time included in a swath (sec)
     ub_swath_interval = lb_swath_interval*5
-
-    ## process only one CERES order
-    ceres = FG1D(*parse_ceres(ceres_files[0]))
-    '''
-    """ Load combined CERES granules """
-    ## Combine all ceres bands in the list
-    ceres = FG1D(labels, list(map(np.concatenate, zip(*tuple(
-        data for _,data in map(parse_ceres, ceres_files)
-        )))))
-    '''
-
-    '''
-    """ buffered labels are extracted into a pkl for quicker access """
-    buf_pkl = data_dir.joinpath(
-            "buffer/ceres-ssf_e4a_terra_20170101-20180101_28N-38N_95W-75W.pkl")
-    buf_labels = ["jday", "lat", "lon", "vza", "raa", "sza",
-                  "swflux", "wnflux", "lwflux"]
-    '''
-    '''
-    ## Write a pickle containing a subset of the bands for convenience.
-    pkl.dump([ceres.data(l) for l in buf_labels], buf_pkl.open("wb"))
-    ## Load a pickle containing a subset of the bands.
-    buf_data = pkl.load(buf_pkl.open("rb"))
-    ceres = FG1D(buf_labels, buf_data)
-    '''
-
-    #print(f"footprints, features : {ceres.data().shape}")
-    #print(f"unique days: {np.unique(np.round(ceres.data('jday'))).size}")
-
-    """ Swap julian calendar for epoch seconds """
+    ## Minimum number of valid footprints that warrant storing a swath
+    min_footprints = 50
+    ## The easiest way to convert from julian is wrt a specific reference day.
     ref_jday = 2444239.5
     ref_gday = datetime(year=1980,month=1,day=1)
-    epoch = np.array([jday_to_epoch(jday, ref_jday, ref_gday)
-                      for jday in ceres.data("jday")])
-    ceres.drop_data("jday")
-    ceres.add_data("epoch", epoch)
 
-    ceres = ceres.mask(np.logical_and(
-        (ceres.data("epoch")>=t0.timestamp()),
-        (ceres.data("epoch")<tf.timestamp())
-        ))
-    cday = ceres.mask(ceres.data("sza")<=ub_sza)
+    sy = [(sat,year) for year in (2015,2017,2021) for sat in ("terra", "aqua")]
+    for sat,year in sy:
+        t0,tf = datetime(year,1,1),datetime(year,12,31,23,59,59,999999)
+        ceres_file = data_dir.joinpath(
+                f"ceres/ceres-ssf_e4a_{sat}_{year}0101-{1+year}0101.nc")
+        swaths_pkl = data_dir.joinpath(f"buffer/{sat}_ceres_seus_{year}.pkl")
 
-    ## Only consider daytime swaths for now.
-    ceres = cday.mask(cday.data("vza")<=ub_vza)
+        ## process only one CERES order
+        ceres = FG1D(*parse_ceres(ceres_file))
+        '''
+        """ Load combined CERES granules """
+        ## Combine all ceres bands in the list
+        ceres = FG1D(labels, list(map(np.concatenate, zip(*tuple(
+            data for _,data in map(parse_ceres, ceres_files)
+            )))))
+        '''
 
-    ## More than 5 minutes probably means it's a different swath.
-    all_swaths = []
-    tmask = np.concatenate((np.array([True]), np.diff(
-        ceres.data("epoch"))>lb_swath_interval))
-    approx_times = ceres.data("epoch")[tmask]
-    for stime in approx_times:
-        ## Look for anything with a stime offset less than 15min
-        smask = np.abs(ceres.data("epoch")-stime)<lb_swath_interval*3
-        swath = ceres.mask(smask)
-        all_swaths.append(swath)
+        '''
+        """ buffered labels are extracted into a pkl for quicker access """
+        #buf_pkl = data_dir.joinpath("buffer/")
+        buf_labels = ["jday", "lat", "lon", "vza", "raa", "sza",
+                      "swflux", "wnflux", "lwflux"]
+        '''
+        '''
+        ## Write a pickle containing a subset of the bands for convenience.
+        pkl.dump([ceres.data(l) for l in buf_labels], buf_pkl.open("wb"))
+        ## Load a pickle containing a subset of the bands.
+        buf_data = pkl.load(buf_pkl.open("rb"))
+        ceres = FG1D(buf_labels, buf_data)
+        '''
 
-    ## Keep all swaths with at least 50 footprints in range.
-    pkl.dump([s.to_tuple() for s in all_swaths if s.size>50],
-             swaths_pkl.open("wb"))
+        #print(f"footprints, features : {ceres.data().shape}")
+        #print(f"unique days: {np.unique(np.round(ceres.data('jday'))).size}")
 
-    #print(np.count_nonzero(np.diff(cnight.data("epoch")) > 240))
-    #print(np.count_nonzero(np.diff(cnight.data("epoch")) > 512))
-    #print(np.count_nonzero(np.diff(cnight.data("epoch")) > 3600))
+        """ Swap julian calendar for epoch seconds """
+        epoch = np.array([jday_to_epoch(jday, ref_jday, ref_gday)
+                          for jday in ceres.data("jday")])
+        ceres.drop_data("jday")
+        ceres.add_data("epoch", epoch)
+
+        ceres = ceres.mask(np.logical_and(
+            (ceres.data("epoch")>=t0.timestamp()),
+            (ceres.data("epoch")<tf.timestamp())
+            ))
+        cday = ceres.mask(ceres.data("sza")<=ub_sza)
+
+        ## Only consider daytime swaths for now.
+        ceres = cday.mask(cday.data("vza")<=ub_vza)
+
+        ## More than 5 minutes probably means it's a different swath.
+        all_swaths = []
+        tmask = np.concatenate((np.array([True]), np.diff(
+            ceres.data("epoch"))>lb_swath_interval))
+        approx_times = ceres.data("epoch")[tmask]
+        for stime in approx_times:
+            ## Look for anything with a stime offset less than 15min
+            smask = np.abs(ceres.data("epoch")-stime)<lb_swath_interval*3
+            swath = ceres.mask(smask)
+            all_swaths.append(swath)
+
+        ## Keep all swaths with at least 50 footprints in range.
+        pkl.dump([s.to_tuple() for s in all_swaths if s.size>min_footprints],
+                 swaths_pkl.open("wb"))

@@ -19,7 +19,7 @@ from krttdkit.acquire import laads
 from FG1D import FG1D
 
 def get_modis_swath(init_time:datetime, final_time:datetime, laads_token:str,
-                    modis_dir:Path, bands:tuple, latlon_bbox:tuple,
+                    modis_nc_dir:Path, bands:tuple, latlon_bbox:tuple,
                     keep_rad=False, adjsec=1200, isaqua=False, debug=False):
     """
     Kicks off process of developing datasets of MODIS pixels that are clustered
@@ -41,7 +41,7 @@ def get_modis_swath(init_time:datetime, final_time:datetime, laads_token:str,
     l1b_files = [
             laads.download(
                 target_url=g["downloadsLink"],
-                dest_dir=modis_dir,
+                dest_dir=modis_nc_dir,
                 raw_token=laads_token,
                 debug=debug
                 )
@@ -99,22 +99,39 @@ def mp_get_modis_swath(swath:dict):
             }
     args = dict(defaults, **swath)
     mandatory_args = ("init_time","final_time","laads_token",
-                      "modis_dir", "bands")
+                      "modis_nc_dir", "bands")
     try:
         assert all(k in args.keys() for k in mandatory_args)
         return args,get_modis_swath(**args)
     except Exception as e:
-        raise e
-        #return None
+        #raise e
+        print(e)
+        return None
 
 
 
 if __name__=="__main__":
     debug = True
     data_dir = Path("data")
-    modis_dir = data_dir.joinpath("modis")
+    modis_nc_dir = Path("/rstor/mdodson/modis_seus")
+    modis_swath_dir = data_dir.joinpath("modis")
+    """
+    Generate your own token with an EarthData account here:
+    https://ladsweb.modaps.eosdis.nasa.gov/profiles/#generate-token-modal
+
+    Once you have it, put it directly into the 'laads-token' file as
+    raw text with no newline, ie `cat $TOKEN > token-dir/laads-token`
+    """
     token = str(data_dir.joinpath("laads-token").open("r").read()).strip()
-    swaths_pkl = data_dir.joinpath("buffer/terra_ceres_seus_2017.pkl")
+
+    #swaths_pkl = data_dir.joinpath("buffer/terra_ceres_seus_2017.pkl")
+    #swaths_pkl = data_dir.joinpath("buffer/aqua_ceres_seus_2017.pkl")
+
+    #swaths_pkl = data_dir.joinpath("buffer/terra_ceres_seus_2015.pkl")
+    #swaths_pkl = data_dir.joinpath("buffer/aqua_ceres_seus_2015.pkl")
+
+    #swaths_pkl = data_dir.joinpath("buffer/terra_ceres_seus_2021.pkl")
+    swaths_pkl = data_dir.joinpath("buffer/aqua_ceres_seus_2021.pkl")
     modis_bands = [
             8,              # .41                       Near UV
             1,4,3,          # .64,.55,.46               (R,G,B)
@@ -129,7 +146,7 @@ if __name__=="__main__":
             ]
     ## lat,lon preset for seus
     bbox = ((28,38), (-95,-75))
-    workers = 5
+    workers = 20
     keep_netcdfs = False
 
     """
@@ -151,7 +168,7 @@ if __name__=="__main__":
     assert isaqua or "terra" in swaths_pkl.name.lower()
     shared_args = {
             "laads_token":token,
-            "modis_dir":modis_dir,
+            "modis_nc_dir":modis_nc_dir,
             "bands":modis_bands,
             "latlon_bbox":bbox,
             "isaqua":isaqua,
@@ -168,7 +185,8 @@ if __name__=="__main__":
             if p_all is None:
                 continue
             p_in,p_out = p_all
-            tmp_file = modis_dir.joinpath(
+            ## Construct output pkl name
+            tmp_file = modis_swath_dir.joinpath(
                     ("terra","aqua")[isaqua] +
                     p_in["init_time"].strftime("_%Y%m%d-%H%M%S") +
                     p_in["final_time"].strftime("_%Y%m%d-%H%M%S") +
@@ -179,6 +197,7 @@ if __name__=="__main__":
                 pkl.dump((p_out.to_tuple(), ceres.to_tuple()),
                          tmp_file.open("wb"))
             except Exception as e:
-                raise e
+                #raise e
+                print(e)
             finally:
                 swath_count += 1
