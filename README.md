@@ -1,5 +1,7 @@
 # aes770hw4
 
+![`initial_concept.jpg`](https://github.com/Mitchell-D/aes770hw4/tree/main/figures/initial_concept.jpg)
+
 ## Charge
 
 The final project must use satellite data and combination of
