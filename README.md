@@ -1,14 +1,16 @@
 # aes770hw4
 
-<p align="center">
-  <img width="800" src="https://github.com/Mitchell-D/aes770hw4/blob/main/figures/initial_concept.jpg" />
-</p>
-
 ## Charge
 
 The final project must use satellite data and combination of
 radiative transfer/Machine learning models to address an
 earth-atmosphere problem.
+
+## Initial concept / overview
+
+<p align="center">
+  <img width="800" src="https://github.com/Mitchell-D/aes770hw4/blob/main/figures/initial_concept.jpg" />
+</p>
 
 ## Software Goals
 
@@ -34,6 +36,53 @@ earth-atmosphere problem.
     *flux contribution* of each modis pixel, using a custom loss
     function that compares the spatial average to the bulk CERES
     footprint values for flux.
+
+## Data Input
+
+The autoencoder is initially only trained on MODIS pixels, even
+though they are grouped in local sets by relating them to the CERES
+gris. The following are the extracted MODIS bands, in order, followed
+by the default order of MODIS geometry fields (appended later)
+
+```python
+##                      # MODIS Band Selection (in order)
+modis_bands = [
+        8,              # .41                       Near UV
+        1,4,3,          # .64, .55, .46             (R,G,B)
+        2,              # .86                       NIR
+        18,             # .935                      NIR water vapor
+        5,26,6,7,       # 1.24, 1.38, 1.64, 2.105   SWIR (+cirrus)
+        20,             # 3.7                       Magic IR
+        27,28,          # 6.5, 7.1                  (high,low) pwv
+        30,             # 9.7                       ozone
+        31,             # 10.9                      clean window
+        33,             # 13.3                      co2
+        ]               # lat, lon, height,         geodesy
+##                      # sza, saa, vza, vaa        geometry
+```
+
+Although most aren't used, the following CERES fields are extracted
+along with the geolocation and fluxes as context for future analysis
+wrt surface types and cloud/aerosol forcing.
+
+```python
+labels = [ ## custom label mappings for CERES bands
+        'jday', 'lat', 'lon', 'vza', 'raa', 'sza',   # Context
+        'id_s1', 'id_s2', 'id_s3', 'id_s4',          # Sfc types
+        'id_s5', 'id_s6', 'id_s7', 'id_s8',
+        'pct_s1', 'pct_s2', 'pct_s3', 'pct_s4',      # Sfc dist
+        'pct_s5', 'pct_s6', 'pct_s7', 'pct_s8',
+        'pct_clr', 'pct_l1', 'pct_l2', 'pct_ol',
+        'swflux', 'wnflux', 'lwflux',                # Fluxes
+        'nocld', 'nocld_wk',                         # Cloud mask
+        'l1_cod', 'l2_cod', 'l1_sdcod', 'l2_sdcod',  # Cloud layers
+        'aer_land_pct', 'aer_land_cfrac',            # Land aero
+        'aer_land_type', 'aod_land',
+        'aer_db_pct', 'aod_db',                      # Deep blue aero
+        'aer_ocean_pct', 'aer_ocean_cfrac',          # Ocean aero
+        'aod_ocean', 'aod_ocean_small'
+        ]
+```
 
 ## Software
 
@@ -107,51 +156,4 @@ removing invalid footprints.
 
 The NaN checking in this file should eventually be migrated into the
 `aggregate_ceres_modis.py` process pipeline.
-
-## Data Input
-
-The autoencoder is initially only trained on MODIS pixels, even
-though they are grouped in local sets by relating them to the CERES
-gris. The following are the extracted MODIS bands, in order, followed
-by the default order of MODIS geometry fields (appended later)
-
-```python
-##                      # MODIS Band Selection (in order)
-modis_bands = [
-        8,              # .41                       Near UV
-        1,4,3,          # .64, .55, .46             (R,G,B)
-        2,              # .86                       NIR
-        18,             # .935                      NIR water vapor
-        5,26,6,7,       # 1.24, 1.38, 1.64, 2.105   SWIR (+cirrus)
-        20,             # 3.7                       Magic IR
-        27,28,          # 6.5, 7.1                  (high,low) pwv
-        30,             # 9.7                       ozone
-        31,             # 10.9                      clean window
-        33,             # 13.3                      co2
-        ]               # lat, lon, height,         geodesy
-##                      # sza, saa, vza, vaa        geometry
-```
-
-Although most aren't used, the following CERES fields are extracted
-along with the geolocation and fluxes as context for future analysis
-wrt surface types and cloud/aerosol forcing.
-
-```python
-labels = [ ## custom label mappings for CERES bands
-        'jday', 'lat', 'lon', 'vza', 'raa', 'sza',   # Context
-        'id_s1', 'id_s2', 'id_s3', 'id_s4',          # Sfc types
-        'id_s5', 'id_s6', 'id_s7', 'id_s8',
-        'pct_s1', 'pct_s2', 'pct_s3', 'pct_s4',      # Sfc dist
-        'pct_s5', 'pct_s6', 'pct_s7', 'pct_s8',
-        'pct_clr', 'pct_l1', 'pct_l2', 'pct_ol',
-        'swflux', 'wnflux', 'lwflux',                # Fluxes
-        'nocld', 'nocld_wk',                         # Cloud mask
-        'l1_cod', 'l2_cod', 'l1_sdcod', 'l2_sdcod',  # Cloud layers
-        'aer_land_pct', 'aer_land_cfrac',            # Land aero
-        'aer_land_type', 'aod_land',
-        'aer_db_pct', 'aod_db',                      # Deep blue aero
-        'aer_ocean_pct', 'aer_ocean_cfrac',          # Ocean aero
-        'aod_ocean', 'aod_ocean_small'
-        ]
-```
 
