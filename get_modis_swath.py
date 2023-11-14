@@ -193,6 +193,7 @@ if __name__=="__main__":
                     ".pkl"
                     )
             try:
+                ## Store both the 1D CERES and the 1D MODIS data in the pkl.
                 assert not tmp_file.exists()
                 pkl.dump((p_out.to_tuple(), ceres.to_tuple()),
                          tmp_file.open("wb"))

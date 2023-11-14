@@ -1,0 +1,43 @@
+#!/bin/csh
+
+### SLURM batch script
+### (based on https://it.nsstc.uah.edu/itwiki/Slurm.queue.html)
+
+### Email address
+#SBATCH --mail-user=mtd0012@uah.edu
+
+### Job name
+#SBATCH -J iter_agg
+
+### Partition (queue), select shared for GPU
+### Optionally specify a GPU type: --gres=gpu:rtx5000:1 or --gres=gpu:a100:1
+##SBATCH -p shared --gres=gpu:a100:1
+##SBATCH -p shared --gres=gpu:rtx5000:2
+
+#SBATCH -p standard
+
+### TOTAL processors (number of tasks)
+#SBATCH --ntasks 40
+
+### total run time estimate (D-HH:MM)
+#SBATCH -t 1-00:00
+
+### memory (MB per CPU)
+#SBATCH --mem-per-cpu=2G
+
+### Mail to user on job done and fail
+#SBATCH --mail-type=END,FAIL
+
+### Ouput files
+#SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/slurm_iter.out
+#SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/slurm_iter.err
+
+## Load my default settings (using aes conda library.)
+source /rhome/mdodson/.bashrc.matrix
+
+cd /rhome/mdodson/aes770hw4
+
+#Run code
+set runcmd = /rhome/mdodson/.conda/envs/aes/bin/python
+
+${runcmd} -u iter_agg.py
