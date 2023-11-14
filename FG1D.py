@@ -63,6 +63,9 @@ class FG1D:
     def mask(self, mask:np.ndarray):
         return FG1D(self.labels, [X[mask] for X in self._data])
 
+    def subset(self, labels:list):
+        return FG1D(labels, [self.data(l) for l in labels])
+
     def scatter(self, xlabel, ylabel, clabel=None, get_trend=False, show=True,
                 fig_path:Path=None, plot_spec:dict={}, tres=500):
         """

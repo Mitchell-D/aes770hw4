@@ -7,15 +7,17 @@
 #SBATCH --mail-user=mtd0012@uah.edu
 
 ### Job name
-#SBATCH -J modis_swaths
+#SBATCH -J agg_eos
 
 ### Partition (queue), select shared for GPU
 ### Optionally specify a GPU type: --gres=gpu:rtx5000:1 or --gres=gpu:a100:1
 ##SBATCH -p shared --gres=gpu:a100:1
 ##SBATCH -p shared --gres=gpu:rtx5000:2
 
+#SBATCH -p standard
+
 ### TOTAL processors (number of tasks)
-#SBATCH --ntasks 20
+#SBATCH --ntasks 30
 
 ### total run time estimate (D-HH:MM)
 #SBATCH -t 1-00:00
@@ -27,8 +29,14 @@
 #SBATCH --mail-type=END,FAIL
 
 ### Ouput files
-#SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/slurm_modis.out
-#SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/slurm_modis.err
+##SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/slurm_agg_2017_aqua.out
+##SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/slurm_agg_2017_aqua.err
+
+##SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/slurm_agg_2021_terra.out
+##SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/slurm_agg_2021_terra.err
+
+##SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/slurm_agg.out
+##SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/slurm_agg.err
 
 
 ### GPU stuff
@@ -48,4 +56,5 @@ cd /rhome/mdodson/aes770hw4
 #Run code
 set runcmd = /rhome/mdodson/.conda/envs/aes/bin/python
 
-${runcmd} -u get_modis_swath.py
+${runcmd} -u aggregate_ceres_modis.py
+##${runcmd} -u list_agg.py
