@@ -35,14 +35,16 @@ earth-atmosphere problem.
 
 ### `FG1D.py`
 
-FeatureGrid-like class for basic operations on 1d arrays of features.
+[FeatureGrid][2]-like class for basic operations on 1d arrays of features.
 This will eventually be more generalized with the current (2D)
 FeatureGrid and HyperGrid
 classes
 
+[2](https://github.com/Mitchell-D/krttdkit/blob/main/krttdkit/products/FeatureGrid.py)
+
 ### `get_ceres_swath.py`
 
-Opens a CERES SSF file, extracts a series of its data features
+Opens a [CERES SSF][3] file, extracts a series of its data features
 (listed below), applies constraints to the footprints (ie sza, vza),
 converts times to epoch, and divides footprints into individual
 satellite overpasses by clustering their encoded times.
@@ -50,6 +52,8 @@ satellite overpasses by clustering their encoded times.
 Stores the result as a 2-tuple like `(ceres_labels, ceres_data)`
 where `ceres_labels` is a list of unique string labels corresponding
 to uniform-size 1D arrays in `ceres_data`.
+
+[3](https://ceres.larc.nasa.gov/data/)
 
 ### `get_modis_swath.py`
 
