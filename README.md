@@ -40,7 +40,7 @@ This will eventually be more generalized with the current (2D)
 FeatureGrid and HyperGrid
 classes
 
-[2](https://github.com/Mitchell-D/krttdkit/blob/main/krttdkit/products/FeatureGrid.py)
+[2]:https://github.com/Mitchell-D/krttdkit/blob/main/krttdkit/products/FeatureGrid.py
 
 ### `get_ceres_swath.py`
 
@@ -53,7 +53,7 @@ Stores the result as a 2-tuple like `(ceres_labels, ceres_data)`
 where `ceres_labels` is a list of unique string labels corresponding
 to uniform-size 1D arrays in `ceres_data`.
 
-[3](https://ceres.larc.nasa.gov/data/)
+[3]:https://ceres.larc.nasa.gov/data/
 
 ### `get_modis_swath.py`
 
