@@ -1,6 +1,6 @@
 # aes770hw4
 
-![`initial_concept.jpg`](https://github.com/Mitchell-D/aes770hw4/tree/main/figures/initial_concept.jpg)
+![initial concept](https://github.com/Mitchell-D/aes770hw4/tree/main/figures/initial_concept.jpg?raw=True)
 
 ## Charge
 
