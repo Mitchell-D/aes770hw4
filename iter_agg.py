@@ -163,6 +163,36 @@ def mp_get_mmm(swath_list):
     for s in stats:
         print(s)
 
+def swaths_to_zarr(swaths, ceres_path:Path, modis_path:Path, overwrite=False):
+    """ Iterates through the provided swaths """
+    if not overwrite:
+        assert not ceres_path.exists()
+        assert not modis_path.exists()
+
+    ceres_store = zarr.ZipStore(ceres_path, mode="w")
+    modis_store = zarr.ZipStore(modis_path, mode="w")
+
+    C = None
+    M = None
+    for S in swaths:
+        ctup,mtup = S
+        clab,cdat = ctup
+        mlab,mdat = mtup
+        print(cdat.shape, mdat.shape)
+        if M is None:
+            C = zarr.creation.array(
+                    cdat, chunks=(1,*cdat.shape[1:]), store=ceres_store)
+            M = zarr.creation.array(
+                    mdat, chunks=(1,*mdat.shape[1:]), store=modis_store)
+        else:
+            C.append(cdat, axis=0)
+            M.append(mdat, axis=0)
+        ceres_store.flush()
+        modis_store.flush()
+    ceres_store.close()
+    modis_store.close()
+    return (C, M)
+
 if __name__=="__main__":
     agg_dir = Path("/rstor/mdodson/aes770hw4/validation")
     #agg_dir = Path("/rstor/mdodson/aes770hw4/training")
@@ -185,5 +215,4 @@ if __name__=="__main__":
     '''
 
     #mp_remove_nan(swath_list = (*terra, *aqua), workers=workers)
-    print(mp_swath_size(swaths, workers))
-
+    #print(mp_swath_size(swaths, workers))
