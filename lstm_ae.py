@@ -403,8 +403,8 @@ if __name__=="__main__":
                 "lstmae_0_{epoch}_{mse:.2f}.hdf5"))
 
     tuner.search(
-            T, T,
-            validation_data=(V, V),
+            T, T[:,::-1],
+            validation_data=(V, V[:,::-1]),
             batch_size=32,
             callbacks=[c_early_stop, c_checkpoint],
             )
