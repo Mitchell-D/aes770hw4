@@ -1,52 +1,62 @@
-agg_terra_1611702678.pkl
-agg_terra_1612913009.pkl
-agg_terra_1613085067.pkl
-agg_terra_1614295399.pkl
-agg_terra_1614467458.pkl
-agg_terra_1614900564.pkl
-agg_terra_1615072624.pkl
-agg_terra_1615677790.pkl
-agg_terra_1615846245.pkl
-agg_terra_1616451411.pkl
-agg_terra_1617400690.pkl
-agg_terra_1620165470.pkl
-agg_terra_1620426518.pkl
-agg_terra_1620770631.pkl
-agg_terra_1621203737.pkl
-agg_terra_1621547850.pkl
-agg_terra_1621808901.pkl
-agg_terra_1622153013.pkl
-agg_terra_1622586120.pkl
-agg_terra_1623102288.pkl
-agg_terra_1624140564.pkl
-agg_terra_1624745725.pkl
-agg_terra_1625522948.pkl
-agg_terra_1626128107.pkl
-agg_terra_1627510492.pkl
-agg_terra_1628287713.pkl
-agg_terra_1628892876.pkl
-agg_terra_1629670095.pkl
-agg_terra_1630275260.pkl
-agg_terra_1630880421.pkl
-agg_terra_1631052478.pkl
-agg_terra_1631396591.pkl
-agg_terra_1631485587.pkl
-agg_terra_1632001756.pkl
-agg_terra_1632262809.pkl
-agg_terra_1632606922.pkl
-agg_terra_1632778975.pkl
-agg_terra_1632867969.pkl
-agg_terra_1633384140.pkl
-agg_terra_1634161358.pkl
-agg_terra_1634250352.pkl
-agg_terra_1634766517.pkl
-agg_terra_1635027566.pkl
-agg_terra_1635804783.pkl
-agg_terra_1635976841.pkl
-agg_terra_1636059906.pkl
-agg_terra_1636579741.pkl
-agg_terra_1636585605.pkl
-agg_terra_1636757660.pkl
-agg_terra_1636840730.pkl
-agg_terra_1637190765.pkl
-agg_terra_1638401091.pkl
+total 3855507
+-rw-r----- 1 mdodson  11370714 Nov 13 02:46 agg_terra_1510787530.pkl
+-rw-r----- 1 mdodson 109458925 Nov 13 02:48 agg_terra_1511220643.pkl
+-rw-r----- 1 mdodson  39796276 Nov 13 02:48 agg_terra_1511392701.pkl
+-rw-r----- 1 mdodson  73186309 Nov 13 02:51 agg_terra_1511997869.pkl
+-rw-r----- 1 mdodson  10730138 Nov 13 02:51 agg_terra_1512169927.pkl
+-rw-r----- 1 mdodson  10249706 Nov 13 02:59 agg_terra_1513552322.pkl
+-rw-r----- 1 mdodson 108017629 Nov 13 03:00 agg_terra_1513985435.pkl
+-rw-r----- 1 mdodson  38595196 Nov 13 03:00 agg_terra_1514157495.pkl
+-rw-r----- 1 mdodson  72385589 Nov 13 03:01 agg_terra_1514762665.pkl
+-rw-r----- 1 mdodson  10569994 Nov 13 16:33 agg_terra_1611702678.pkl
+-rw-r----- 1 mdodson  72705877 Nov 13 16:33 agg_terra_1612913009.pkl
+-rw-r----- 1 mdodson  10569994 Nov 13 16:34 agg_terra_1613085067.pkl
+-rw-r----- 1 mdodson  72465661 Nov 13 16:43 agg_terra_1614295399.pkl
+-rw-r----- 1 mdodson  10569994 Nov 13 16:43 agg_terra_1614467458.pkl
+-rw-r----- 1 mdodson 108578133 Nov 13 16:46 agg_terra_1614900564.pkl
+-rw-r----- 1 mdodson  38995556 Nov 13 16:46 agg_terra_1615072624.pkl
+-rw-r----- 1 mdodson  72545733 Nov 13 16:48 agg_terra_1615677790.pkl
+-rw-r----- 1 mdodson  10569994 Nov 13 16:48 agg_terra_1615846245.pkl
+-rw-r----- 1 mdodson  38835412 Nov 13 16:50 agg_terra_1616451411.pkl
+-rw-r----- 1 mdodson  10569994 Nov 13 16:57 agg_terra_1617400690.pkl
+-rw-r----- 1 mdodson  10810210 Nov 13 17:08 agg_terra_1620165470.pkl
+-rw-r----- 1 mdodson 175358181 Nov 13 17:08 agg_terra_1620426518.pkl
+-rw-r----- 1 mdodson  39395916 Nov 13 17:12 agg_terra_1620770631.pkl
+-rw-r----- 1 mdodson 144050029 Nov 13 17:13 agg_terra_1621203737.pkl
+-rw-r----- 1 mdodson  10730138 Nov 13 17:17 agg_terra_1621547850.pkl
+-rw-r----- 1 mdodson 175438253 Nov 13 17:17 agg_terra_1621808901.pkl
+-rw-r----- 1 mdodson  39155700 Nov 13 17:18 agg_terra_1622153013.pkl
+-rw-r----- 1 mdodson 144050029 Nov 13 17:18 agg_terra_1622586120.pkl
+-rw-r----- 1 mdodson  10569994 Nov 13 17:19 agg_terra_1623102288.pkl
+-rw-r----- 1 mdodson  72866021 Nov 13 17:20 agg_terra_1624140564.pkl
+-rw-r----- 1 mdodson 108978493 Nov 13 17:27 agg_terra_1624745725.pkl
+-rw-r----- 1 mdodson  72866021 Nov 13 17:27 agg_terra_1625522948.pkl
+-rw-r----- 1 mdodson 108818349 Nov 13 17:34 agg_terra_1626128107.pkl
+-rw-r----- 1 mdodson 108738277 Nov 13 17:39 agg_terra_1627510492.pkl
+-rw-r----- 1 mdodson  72625805 Nov 13 17:40 agg_terra_1628287713.pkl
+-rw-r----- 1 mdodson 108578133 Nov 13 17:45 agg_terra_1628892876.pkl
+-rw-r----- 1 mdodson  72705877 Nov 13 17:46 agg_terra_1629670095.pkl
+-rw-r----- 1 mdodson 108738277 Nov 13 18:05 agg_terra_1630275260.pkl
+-rw-r----- 1 mdodson 194335245 Nov 13 18:06 agg_terra_1630880421.pkl
+-rw-r----- 1 mdodson  72866021 Nov 13 18:06 agg_terra_1631052478.pkl
+-rw-r----- 1 mdodson  10569994 Nov 13 18:06 agg_terra_1631396591.pkl
+-rw-r----- 1 mdodson 200100429 Nov 13 18:06 agg_terra_1631485587.pkl
+-rw-r----- 1 mdodson  39075628 Nov 13 18:06 agg_terra_1632001756.pkl
+-rw-r----- 1 mdodson 194735605 Nov 13 18:06 agg_terra_1632262809.pkl
+-rw-r----- 1 mdodson  73026165 Nov 13 18:09 agg_terra_1632606922.pkl
+-rw-r----- 1 mdodson  10730138 Nov 13 18:09 agg_terra_1632778975.pkl
+-rw-r----- 1 mdodson 200260573 Nov 13 18:09 agg_terra_1632867969.pkl
+-rw-r----- 1 mdodson  39395916 Nov 13 18:12 agg_terra_1633384140.pkl
+-rw-r----- 1 mdodson  10970354 Nov 13 18:15 agg_terra_1634161358.pkl
+-rw-r----- 1 mdodson 200180501 Nov 13 18:15 agg_terra_1634250352.pkl
+-rw-r----- 1 mdodson  39315844 Nov 13 18:15 agg_terra_1634766517.pkl
+-rw-r----- 1 mdodson 194655533 Nov 13 18:16 agg_terra_1635027566.pkl
+-rw-r----- 1 mdodson 175358181 Nov 13 18:19 agg_terra_1635804783.pkl
+-rw-r----- 1 mdodson 108818349 Nov 13 18:20 agg_terra_1635976841.pkl
+-rw-r----- 1 mdodson   5045026 Nov 13 18:20 agg_terra_1636059906.pkl
+-rw-r----- 1 mdodson 188009557 Nov 13 18:23 agg_terra_1636579741.pkl
+-rw-r----- 1 mdodson 144210173 Nov 13 18:23 agg_terra_1636585605.pkl
+-rw-r----- 1 mdodson  73346453 Nov 13 18:23 agg_terra_1636757660.pkl
+-rw-r----- 1 mdodson  23061228 Nov 13 18:23 agg_terra_1636840730.pkl
+-rw-r----- 1 mdodson 175598397 Nov 13 18:25 agg_terra_1637190765.pkl
+-rw-r----- 1 mdodson  11210570 Nov 13 18:25 agg_terra_1638401091.pkl

@@ -17,7 +17,7 @@
 #SBATCH -p standard
 
 ### TOTAL processors (number of tasks)
-#SBATCH --ntasks 40
+#SBATCH --ntasks 30
 
 ### total run time estimate (D-HH:MM)
 #SBATCH -t 1-00:00
