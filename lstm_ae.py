@@ -69,24 +69,6 @@ def get_lstm_stack(name:str, layer_input:Layer, node_list:list, return_seq,
         l_prev = l_new
     return l_prev
 
-def mask_normal(seq_mean_count, seq_stdev_count):
-    """
-    Given a (batch, sequence, feature) shaped array, mask a percentage of
-    the feature pixels
-    """
-    pass
-
-
-def swath_gen(ids, batch_size):
-    batch=[]
-    while True:
-        np.random.shuffle(ids)
-        for i in ids:
-            batch.append(i)
-            if len(batch)==batch_size:
-                yield load_data(batch)
-                batch=[]
-
 def basic_lstmae(
         seq_len:int, feat_len:int, enc_nodes:list, dec_nodes:list, latent:int,
         latent_activation="sigmoid", dropout_rate=0.0, batchnorm=True,
@@ -291,7 +273,10 @@ def hp_basic_lstmae(hp:keras_tuner.HyperParameters):
     return model#, enc, dec
 
 def swaths_to_zarr(swaths, ceres_path:Path, modis_path:Path, overwrite=False):
-    """ Iterates through the provided swaths """
+    """
+    Iterates through the provided swath generator, and adds the CERES and MODIS
+    data to separate zarr arrays.
+    """
     if not overwrite:
         assert not ceres_path.exists()
         assert not modis_path.exists()
@@ -329,6 +314,24 @@ def swaths_to_zarr(swaths, ceres_path:Path, modis_path:Path, overwrite=False):
     ceres_store.close()
     modis_store.close()
     return (C, M)
+
+def mask_normal(seq_mean_count, seq_stdev_count):
+    """
+    Given a (batch, sequence, feature) shaped array, mask a percentage of
+    the feature pixels
+    """
+    pass
+
+
+def swath_gen(ids, batch_size):
+    batch=[]
+    while True:
+        np.random.shuffle(ids)
+        for i in ids:
+            batch.append(i)
+            if len(batch)==batch_size:
+                yield load_data(batch)
+                batch=[]
 
 if __name__=="__main__":
     '''
