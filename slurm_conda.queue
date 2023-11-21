@@ -7,7 +7,7 @@
 #SBATCH --mail-user=mtd0012@uah.edu
 
 ### Job name
-#SBATCH -J iter_agg
+#SBATCH -J conda
 
 ### Partition (queue), select shared for GPU
 ### Optionally specify a GPU type: --gres=gpu:rtx5000:1 or --gres=gpu:a100:1
@@ -17,20 +17,20 @@
 #SBATCH -p standard
 
 ### TOTAL processors (number of tasks)
-#SBATCH --ntasks 1
+#SBATCH --ntasks 15
 
 ### total run time estimate (D-HH:MM)
-#SBATCH -t 1-00:00
+#SBATCH -t 0-01:00
 
 ### memory (MB per CPU)
-#SBATCH --mem-per-cpu=8G
+#SBATCH --mem-per-cpu=12G
 
 ### Mail to user on job done and fail
 #SBATCH --mail-type=END,FAIL
 
 ### Ouput files
-#SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/slurm_iter.out
-#SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/slurm_iter.err
+#SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/conda.out
+#SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/conda.err
 
 ## Load my default settings (using aes conda library.)
 source /rhome/mdodson/.bashrc.matrix
@@ -38,6 +38,6 @@ source /rhome/mdodson/.bashrc.matrix
 cd /rhome/mdodson/aes770hw4
 
 #Run code
-set runcmd = /rhome/mdodson/.conda/envs/aes/bin/python
+set runcmd = /common/pkgs/anaconda/x64/condabin/conda
 
-${runcmd} -u iter_agg.py
+${runcmd} create -n train -c conda-forge numpy tensorflow tensorflow-gpu keras-tuner pathlib

@@ -7,8 +7,9 @@ import pickle as pkl
 #from FG1D import FG1D
 import zarr
 import numpy as np
+import os
 
-import keras_tuner
+#import keras_tuner
 import tensorflow as tf
 from tensorflow.keras.layers import Layer,Masking
 from tensorflow.keras.models import Sequential
@@ -17,6 +18,12 @@ from tensorflow.keras.layers import TimeDistributed, Flatten, RepeatVector
 from tensorflow.keras.layers import InputLayer, LSTM, Dense, Bidirectional
 from tensorflow.keras.regularizers import L2
 from tensorflow.keras import Input, Model
+
+#os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ['TF_XLA_FLAGS'] = '--tf_xla_enable_xla_devices'
+print(f"Tensorflow version: {tf.__version__}")
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+print(tf.config.list_physical_devices())
 
 def_lstm_kwargs = {
             ## output activation
@@ -150,6 +157,7 @@ def basic_lstmae(
     decoder = Model(l_enc_out, l_dec_out)
     return full, encoder, decoder
 
+'''
 def hp_basic_lstmae(hp:keras_tuner.HyperParameters):
     """
     Model constructor function for hyperparamter tuning.
@@ -271,86 +279,19 @@ def hp_basic_lstmae(hp:keras_tuner.HyperParameters):
             metrics=["mse"]
             )
     return model#, enc, dec
-
-def swaths_to_zarr(swaths, ceres_path:Path, modis_path:Path, overwrite=False):
-    """
-    Iterates through the provided swath generator, and adds the CERES and MODIS
-    data to separate zarr arrays.
-    """
-    if not overwrite:
-        assert not ceres_path.exists()
-        assert not modis_path.exists()
-
-    C = None
-    M = None
-    ceres_store = zarr.ZipStore(ceres_path, mode="w")
-    modis_store = zarr.ZipStore(modis_path, mode="w")
-    for S in swaths:
-        ctup,mtup = S
-        clab,cdat = ctup
-        mlab,mdat = mtup
-        print(cdat.shape, mdat.shape)
-        ## Create the zarr arrays if they aren't yet initialized
-        if M is None:
-            C = zarr.creation.array(
-                    data=cdat,
-                    chunks=(1,*cdat.shape[1:]),
-                    store=ceres_store,
-                    )
-            M = zarr.creation.array(
-                    data=mdat,
-                    chunks=(1,*mdat.shape[1:]),
-                    store=modis_store,
-                    )
-            C.attrs["labels"] = clab
-            M.attrs["labels"] = mlab
-        ## Otherwise, append to the existing zarr array store
-        else:
-            C.append(cdat, axis=0)
-            M.append(mdat, axis=0)
-        ## Save the storage file and re-open the memory map
-        ceres_store.flush()
-        modis_store.flush()
-    ceres_store.close()
-    modis_store.close()
-    return (C, M)
-
-def mask_normal(seq_mean_count, seq_stdev_count):
-    """
-    Given a (batch, sequence, feature) shaped array, mask a percentage of
-    the feature pixels
-    """
-    pass
-
-
-def swath_gen(ids, batch_size):
-    batch=[]
-    while True:
-        np.random.shuffle(ids)
-        for i in ids:
-            batch.append(i)
-            if len(batch)==batch_size:
-                yield load_data(batch)
-                batch=[]
+'''
 
 if __name__=="__main__":
-    '''
-    vswaths = sorted([
-            tuple(swath_validation[i:i+3])
-            for i in range(len(swath_validation)//3)
-            ], key=lambda x: random())
-    tswaths = sorted([
-            tuple(swath_training[i:i+3])
-            for i in range(len(swath_training)//3)
-            ], key=lambda x: random())
-    print(vswaths)
-    '''
-    swath_dir = Path("data/swath_sample")
-    swath_paths = (p for p in swath_dir.iterdir() if "pkl" in p.name)
-    swaths = (pkl.load(p.open("rb")) for p in swath_paths)
+    buffer_dir = Path("data/swath_sample")
 
-    ceres_zarr_path = Path("data/buffer/ceres_training.zip")
-    modis_zarr_path = Path("data/buffer/modis_training.zip")
+    #swath_dir = Path("data/swath_sample")
+    #swath_paths = (p for p in swath_dir.iterdir() if "pkl" in p.name)
+    #swaths = (pkl.load(p.open("rb")) for p in swath_paths)
+
+    #ceres_zarr_path = Path("data/buffer/ceres_training.zip")
+    #modis_zarr_path = Path("data/buffer/modis_training.zip")
+    ceres_zarr_path = Path("/rstor/mdodson/aes770hw4/ceres_validation.zip")
+    modis_zarr_path = Path("/rstor/mdodson/aes770hw4/modis_validation.zip")
 
     """ Load swaths into the zarr arrays """
     #swaths_to_zarr(swaths, ceres_zarr_path, modis_zarr_path)
@@ -362,23 +303,76 @@ if __name__=="__main__":
     print(ceres.shape, modis.shape)
     print(dict(ceres.attrs), dict(modis.attrs))
 
-    #exit(0)
+    t_ratio = .8
+    total_size = 500000
+    modis_train_on = np.array((
+        0,1,2,3,4,5,6,7,8,9,10,11,12,
+        13,14,15,19,20,21,22,23,24
+        ))
+    shuffle = np.arange(modis.shape[0])
+    np.random.shuffle(shuffle)
+    cutoff_idx = int(total_size*t_ratio)
+    t_idx = shuffle[:cutoff_idx]
+    v_idx = shuffle[cutoff_idx:total_size]
+    #print(modis.shape, t_idx.shape, modis_train_on.shape)
+    T = modis.oindex[t_idx,:,modis_train_on]
+    V = modis.oindex[v_idx,:,modis_train_on]
+    print(T.shape, V.shape)
+
+    c_early_stop = tf.keras.callbacks.EarlyStopping(
+            monitor="val_loss", patience=4)
+    c_checkpoint = tf.keras.callbacks.ModelCheckpoint(
+            monitor="val_loss", save_best_only=True,
+            filepath=buffer_dir.joinpath(
+                "lstmae_0_{epoch}_{mse:.2f}.hdf5"))
+    c_csvlog = tf.keras.callbacks.CSVLogger(
+            buffer_dir.joinpath("lstmae_0_prog.csv"))
+
+    #'''
+    model = basic_lstmae(
+            seq_len=400,
+            feat_len=len(modis_train_on),
+            enc_nodes=[64, 64, 64],
+            dec_nodes=[64, 64, 64],
+            latent=32,
+            latent_activation="sigmoid",
+            dropout_rate=0.0,
+            batchnorm=True,
+            mask_val=None,
+            bidirectional=True,
+            enc_lstm_kwargs={},
+            dec_lstm_kwargs={},
+            )
+
+    model.compile(
+            optimizer=tf.keras.optimizers.Adam(),
+            loss="mse",
+            metrics=["mse", "val_loss"],
+            )
+
+    hist = model.fit(
+            x=T,
+            y=T[:,::-1],
+            epochs=800,
+            callbacks=[
+                c_early_stop,
+                c_checkpoint,
+                c_csvlog,
+                ],
+            validation_data=(V, V[:,::-1]),
+            )
+    #'''
 
     '''
-    """ Load single swath """
-    ctup,mtup = next(swaths)
-    clab,cdat = t_ctup
-    mlab,mdat = t_mtup
-    '''
-
     hp = keras_tuner.HyperParameters()
     #model = hp_basic_lstmae(hp)
     #print(model(mdat))
     tuner_dir = Path("data/tuner")
+    tuner_dir = Path("data/buffer/train")
 
     tuner = keras_tuner.Hyperband(
             hp_basic_lstmae,
-            objective="mse",
+            objective="val_loss",
             ## Maximum epochs per training run
             max_epochs=40,
             ## reduction factor from https://doi.org/10.48550/arXiv.1603.06560
@@ -388,23 +382,7 @@ if __name__=="__main__":
             max_retries_per_trial=1,
             )
 
-    t_ratio = .8
-    shuffle = np.arange(modis.shape[0])
-    np.random.shuffle(shuffle)
-    cutoff_idx = int(modis.shape[0]*t_ratio)
-    t_idx = shuffle[:cutoff_idx]
-    v_idx = shuffle[cutoff_idx:]
-    T = modis[t_idx]
-    V = modis[v_idx]
-
     print(tuner.search_space_summary())
-    c_early_stop = tf.keras.callbacks.EarlyStopping(
-            monitor="mse", patience=4)
-    c_checkpoint = tf.keras.callbacks.ModelCheckpoint(
-            monitor="mse", save_best_only=True,
-            filepath=tuner_dir.joinpath(
-                "lstmae_0_{epoch}_{mse:.2f}.hdf5"))
-
     tuner.search(
             T, T[:,::-1],
             validation_data=(V, V[:,::-1]),
@@ -412,6 +390,7 @@ if __name__=="__main__":
             callbacks=[c_early_stop, c_checkpoint],
             )
     print(tuner.get_best_hyperparameters())
+    '''
 
     #print(model.summary())
     #print(encoder.summary())
