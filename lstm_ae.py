@@ -208,7 +208,7 @@ if __name__=="__main__":
     print(modis_train.shape, modis_val.shape)
 
     ## Identifying label for this model
-    model_name= "lstmae_1"
+    model_name= "lstmae_2"
     ## Size of batches in samples
     batch_size = 128
     ## Batches to draw asynchronously from the generator
@@ -239,7 +239,7 @@ if __name__=="__main__":
             feat_len=len(modis_feat_idxs),
             enc_nodes=[64, 64, 64],
             dec_nodes=[64, 64, 64],
-            latent=32,
+            latent=64,
             latent_activation="sigmoid",
             dropout_rate=0.0,
             batchnorm=True,
@@ -283,7 +283,7 @@ if __name__=="__main__":
     ## Train the model on the generated tensors
     hist = model.fit(
             train_gen.batch(batch_size).prefetch(batch_buffer),
-            epochs=400,
+            epochs=600,
             ## Number of batches to draw per epoch. Use full dataset by default
             #steps_per_epoch=modis_train.shape[0]//batch_size,
             steps_per_epoch=100, ## 12,800 training samples per epoch
