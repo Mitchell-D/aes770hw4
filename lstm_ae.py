@@ -153,185 +153,90 @@ def basic_lstmae(
     ## Each instance correspond to the same weights per:
     ## https://keras.io/api/models/model/
     full = Model(l_seq_in, l_dec_out)
-    encoder = Model(l_seq_in, l_enc_out)
-    decoder = Model(l_enc_out, l_dec_out)
-    return full, encoder, decoder
+    #encoder = Model(l_seq_in, l_enc_out)
+    #decoder = Model(l_enc_out, l_dec_out)
+    return full#, encoder, decoder
 
-'''
-def hp_basic_lstmae(hp:keras_tuner.HyperParameters):
+def shuffle_generator(zarr_path, seed, feature_idxs):
     """
-    Model constructor function for hyperparamter tuning.
-
-    All search space hyperparameter ranges should be set in this method.
-
-    :@return: 3-tuple of Model object references (full_model,encoder,decoder),
-        where the full model has been compiled with hyperparameters.
+    Generator yielding random first-dimension samples from a large zarr array.
     """
-    hdict = {
-            ## Size of input sequence (2nd dimension of batch array)
-            "in_seq_len":hp.Fixed("in_seq_len", 400),
-            ## Size of feature vector (3nd dimension of batch array)
-            "in_feat_len":hp.Fixed("in_feat_len", 25),
-            ## List of encoder node counts defining each layer from in to out.
-            "enc_lstm_nodes":[
-                #hp.Fixed("enc_lstm_0", 64),
-                hp.Int("enc_lstm_0", 32, 96, 32),
-                hp.Int("enc_lstm_1", 32, 96, 32),
-                hp.Int("enc_lstm_2", 32, 96, 32),
-                ],
-            ## List of decoder node counts defining each layer from in to out
-            "dec_lstm_nodes":[
-                hp.Fixed("dec_lstm_0", 64),
-                hp.Fixed("dec_lstm_0", 64),
-                hp.Fixed("dec_lstm_0", 64),
-                ],
-            ## Size of latent representation vector
-            #"latent":hp.Fixed("latent", 32),
-            "latent":hp.Int("latent", 32, 32, 96),
-            "latent_activation":hp.Fixed("latent_activation", "linear"),
-            ## Dropout rate between lstm layers (instead of between seq cells)
-            "dropout_rate":hp.Float("dropout_rate", 0.0, 0.3, 3),
-            ## Use bidirectional LSTMs for encoder and decoder
-            "batchnorm":hp.Fixed("batchnorm",True),
-            ## Use bidirectional LSTMs for encoder and decoder
-            "bidirectional":hp.Fixed("bidirectional", True),
-            ## Define the value that marks sequence vectors as ignorable
-            ## when all the vector's features are equal to it.
-            "mask_val":hp.Fixed("mask_val", 9999.9999),
-            ## Optimizer learning rate
-            "learning_rate":hp.Fixed("learning_rate", 0.001),
+    zarr_memmap = zarr.open(zarr_path.decode('ASCII'), mode="r")
+    idxs = np.arange(zarr_memmap.shape[0])
+    np.random.default_rng(seed).shuffle(idxs)
+    for i in idxs:
+        tmpx = zarr_memmap[i]
+        tmpx = tmpx[...,feature_idxs]
+        tmpy = np.copy(tmpx)[:,::-1]
+        yield tuple(map(tf.convert_to_tensor, (tmpx, tmpy)))
 
-            ## Dropout rate for encoder cell state
-            "enc_lstm-cell_dropout":hp.Fixed(
-                "enc_lstm-cell_dropout", 0.0),
-            ## Activation function between lstm cell states
-            "enc_lstm-cell_activation":hp.Fixed(
-                "enc_lstm-cell_activation", "sigmoid"),
-            ## Initial weight activation method for encoder cell state
-            "enc_lstm-cell_init":hp.Fixed(
-                "enc_lstm-cell_init","orthogonal"),
-
-            ## Dropout rate for encoder prev-step inputs
-            "enc_lstm-state_dropout":hp.Fixed(
-                "enc_lstm-state_dropout", 0.0),
-            ## Activation function for encoder  prev-step input
-            "enc_lstm-state_activation":hp.Fixed(
-                    "enc_lstm-state_activation", "tanh"),
-            ## Initial activation strategy for 'previous output'
-            "enc_lstm-state_init":hp.Fixed(
-                    "enc_lstm-state_init","glorot_uniform"),
-
-            ## Dropout rate for decoder cell state
-            "dec_lstm-cell_dropout":hp.Fixed(
-                    "dec_lstm-cell_dropout", 0.0),
-            ## Activation function for decoder cell state
-            "dec_lstm-cell_activation":hp.Fixed(
-                    "dec_lstm-cell_activation", "sigmoid"),
-            ## Initial weight activation strategy for encoder cell state
-            "dec_lstm-cell_init":hp.Fixed(
-                    "dec_lstm-cell_init","orthogonal"),
-
-            ## Dropout rate for decoder inputs
-            "dec_lstm-state_dropout":hp.Fixed(
-                    "dec_lstm-state_dropout", 0.0),
-            ## Activation function for decoder
-            "dec_lstm-state_activation":hp.Fixed(
-                    "dec_lstm-state_activation", "tanh"),
-            ## initial activation for 'previous output'
-            "dec_lstm-state_init":hp.Fixed(
-                    "dec_lstm-state_init","glorot_uniform"),
-            }
-
-    ## Initialize the model with the above arguments.
-    model, encoder, decoder = basic_lstmae(
-        seq_len=hdict.get("in_seq_len"),
-        feat_len=hdict.get("in_feat_len"),
-        enc_nodes=hdict.get("enc_lstm_nodes"),
-        dec_nodes=hdict.get("dec_lstm_nodes"),
-        latent=hdict.get("latent"),
-        latent_activation=hdict.get("latent_activation"),
-        dropout_rate=hdict.get("dropout_rate"),
-        batchnorm=hdict.get("batchnorm"),
-        mask_val=hdict.get("mask_val"),
-        bidirectional=hdict.get("bidirectional"),
-        enc_lstm_kwargs={
-            "dropout":hdict.get("enc_lstm-state_dropout"),
-            "activation":hdict.get("enc_lstm-state_activation"),
-            "kernel_initializer":hdict.get("enc_lstm-state_init"),
-            "recurrent_dropout":hdict.get("enc_lstm-cell_dropout"),
-            "recurrent_activation":hdict.get("enc_lstm-cell_activation"),
-            "recurrent_initializer":hdict.get("enc_lstm-cell_init"),
-            },
-        dec_lstm_kwargs={
-            "dropout":hdict.get("dec_lstm-state_dropout"),
-            "activation":hdict.get("dec_lstm-state_activation"),
-            "kernel_initializer":hdict.get("dec_lstm-state_init"),
-            "recurrent_dropout":hdict.get("dec_lstm-cell_dropout"),
-            "recurrent_activation":hdict.get("dec_lstm-cell_activation"),
-            "recurrent_initializer":hdict.get("dec_lstm-cell_init"),
-            },
-        )
-    model.compile(
-            optimizer=tf.keras.optimizers.Adam(
-                learning_rate=hdict.get("learning_rate"),
-                ),
-            loss="mse",
-            metrics=["mse"]
-            )
-    return model#, enc, dec
-'''
+def simple_tv_split(zarr_array, feature_idxs, total_size,
+        training_ratio=.8, seed=None):
+    """
+    Shuffles the provided zarr_array along the first axis, and returns training
+    and validation numpy arrays with first-axis sizes summing to total_size.
+    Only features (last axis) with the provided indeces will be included.
+    """
+    idxs = np.arange(zarr_array.shape[0])
+    if not seed is None:
+        np.random.default_rng(seed).shuffle(idxs)
+    else:
+        np.random.shuffle(idxs)
+    cutoff_idx = int(total_size*training_ratio)
+    t_idx = idxs[:cutoff_idx]
+    v_idx = idxs[cutoff_idx:total_size]
+    T = zarr_array.oindex[t_idx,:,feature_idxs]
+    V = zarr_array.oindex[v_idx,:,feature_idxs]
+    return T, V
 
 if __name__=="__main__":
-    buffer_dir = Path("data/swath_sample")
-
-    #swath_dir = Path("data/swath_sample")
-    #swath_paths = (p for p in swath_dir.iterdir() if "pkl" in p.name)
-    #swaths = (pkl.load(p.open("rb")) for p in swath_paths)
-
-    #ceres_zarr_path = Path("data/buffer/ceres_training.zip")
-    #modis_zarr_path = Path("data/buffer/modis_training.zip")
     ceres_zarr_path = Path("/rstor/mdodson/aes770hw4/ceres_validation.zip")
-    modis_zarr_path = Path("/rstor/mdodson/aes770hw4/modis_validation.zip")
+    modis_val_path = Path("/rstor/mdodson/aes770hw4/modis_validation.zip")
+    modis_train_path = Path("/rstor/mdodson/aes770hw4/modis_training.zip")
 
-    """ Load swaths into the zarr arrays """
-    #swaths_to_zarr(swaths, ceres_zarr_path, modis_zarr_path)
+    ## Directory with sub-directories for each model.
+    model_parent_dir = Path("data/models/")
 
-    """ Load swaths from the zarr arrays """
-    ceres = zarr.Array(ceres_zarr_path, read_only=True)
-    modis = zarr.Array(modis_zarr_path, read_only=True)
+    modis_train = zarr.Array(
+            store=zarr.storage.ZipStore(modis_train_path.as_posix(),mode="r"),
+            read_only=True,
+            )
+    modis_val = zarr.Array(
+            store=zarr.storage.ZipStore(modis_val_path.as_posix(),mode="r"),
+            read_only=True,
+            )
+    print(modis_train.shape, modis_val.shape)
 
-    print(ceres.shape, modis.shape)
-    print(dict(ceres.attrs), dict(modis.attrs))
+    ## Identifying label for this model
+    model_name= "lstmae_1"
+    ## Size of batches in samples
+    batch_size = 128
+    ## Batches to draw asynchronously from the generator
+    batch_buffer = 2
+    ## Seed for subsampling training and validation data
+    rand_seed = 20231121
+    ## Indeces of features to train on
+    modis_feat_idxs = (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,20,21,22,23,24)
 
-    t_ratio = .8
-    total_size = 500000
-    modis_train_on = np.array((
-        0,1,2,3,4,5,6,7,8,9,10,11,12,
-        13,14,15,19,20,21,22,23,24
-        ))
-    shuffle = np.arange(modis.shape[0])
-    np.random.shuffle(shuffle)
-    cutoff_idx = int(total_size*t_ratio)
-    t_idx = shuffle[:cutoff_idx]
-    v_idx = shuffle[cutoff_idx:total_size]
-    #print(modis.shape, t_idx.shape, modis_train_on.shape)
-    T = modis.oindex[t_idx,:,modis_train_on]
-    V = modis.oindex[v_idx,:,modis_train_on]
-    print(T.shape, V.shape)
+    ## Make the directory for this model run, ensuring no name collision.
+    model_dir = model_parent_dir.joinpath(model_name)
+    assert not model_dir.exists()
+    model_dir.mkdir()
 
+    ## Define callbacks for model progress tracking
     c_early_stop = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=4)
+            monitor="val_loss", patience=8)
     c_checkpoint = tf.keras.callbacks.ModelCheckpoint(
             monitor="val_loss", save_best_only=True,
-            filepath=buffer_dir.joinpath(
-                "lstmae_0_{epoch}_{mse:.2f}.hdf5"))
+            filepath=model_dir.joinpath(
+                model_name+"_{epoch}_{mse:.2f}.hdf5"))
     c_csvlog = tf.keras.callbacks.CSVLogger(
-            buffer_dir.joinpath("lstmae_0_prog.csv"))
+            model_dir.joinpath("prog.csv"))
 
-    #'''
+    ## Build a lstm autoencoder
     model = basic_lstmae(
             seq_len=400,
-            feat_len=len(modis_train_on),
+            feat_len=len(modis_feat_idxs),
             enc_nodes=[64, 64, 64],
             dec_nodes=[64, 64, 64],
             latent=32,
@@ -342,56 +247,55 @@ if __name__=="__main__":
             bidirectional=True,
             enc_lstm_kwargs={},
             dec_lstm_kwargs={},
-            )
+            )#[0]
 
+    ## Write a model summary to stdout and to a file
+    model.summary()
+    with model_dir.joinpath(model_name+"_summary.txt").open("w") as f:
+        model.summary(print_fn=lambda x: f.write(x + '\n'))
+
+    print(f"Compiling model")
     model.compile(
             optimizer=tf.keras.optimizers.Adam(),
             loss="mse",
-            metrics=["mse", "val_loss"],
+            metrics=["mse"],
             )
 
+    print(f"Making generators")
+    ## Construct generators for the training and validation data
+    train_gen = tf.data.Dataset.from_generator(
+            shuffle_generator,
+            args=(modis_train_path.as_posix(), rand_seed, modis_feat_idxs),
+            output_signature=(
+                tf.TensorSpec(shape=(400,22), dtype=tf.float16),
+                tf.TensorSpec(shape=(400,22), dtype=tf.float16),
+                ))
+
+    val_gen = tf.data.Dataset.from_generator(
+            shuffle_generator,
+            args=(modis_val_path.as_posix(), rand_seed, modis_feat_idxs),
+            output_signature=(
+                tf.TensorSpec(shape=(400,22), dtype=tf.float16),
+                tf.TensorSpec(shape=(400,22), dtype=tf.float16),
+                ))
+
+    print(f"Fitting model")
+    ## Train the model on the generated tensors
     hist = model.fit(
-            x=T,
-            y=T[:,::-1],
-            epochs=800,
+            train_gen.batch(batch_size).prefetch(batch_buffer),
+            epochs=400,
+            ## Number of batches to draw per epoch. Use full dataset by default
+            #steps_per_epoch=modis_train.shape[0]//batch_size,
+            steps_per_epoch=100, ## 12,800 training samples per epoch
+            validation_data=val_gen.batch(batch_size).prefetch(batch_buffer),
+            ## batches of validation data to draw per epoch
+            validation_steps=10, ## 1,280 validation samples per epoch
+            validation_freq=1, ## Report validation loss each epoch
             callbacks=[
                 c_early_stop,
                 c_checkpoint,
                 c_csvlog,
                 ],
-            validation_data=(V, V[:,::-1]),
+            verbose=2,
             )
-    #'''
-
-    '''
-    hp = keras_tuner.HyperParameters()
-    #model = hp_basic_lstmae(hp)
-    #print(model(mdat))
-    tuner_dir = Path("data/tuner")
-    tuner_dir = Path("data/buffer/train")
-
-    tuner = keras_tuner.Hyperband(
-            hp_basic_lstmae,
-            objective="val_loss",
-            ## Maximum epochs per training run
-            max_epochs=40,
-            ## reduction factor from https://doi.org/10.48550/arXiv.1603.06560
-            factor=3,
-            directory=tuner_dir,
-            project_name="lstmae_0",
-            max_retries_per_trial=1,
-            )
-
-    print(tuner.search_space_summary())
-    tuner.search(
-            T, T[:,::-1],
-            validation_data=(V, V[:,::-1]),
-            batch_size=32,
-            callbacks=[c_early_stop, c_checkpoint],
-            )
-    print(tuner.get_best_hyperparameters())
-    '''
-
-    #print(model.summary())
-    #print(encoder.summary())
-    #print(decoder.summary())
+    model.save(model_dir.joinpath(model_name+".keras"))
