@@ -35,7 +35,8 @@ if __name__=="__main__":
                 color=color, linestyle="solid")
         ax.plot(cdict["epoch"][i], cdict["val_mse"][i], label=models[i],
                 color=color, linestyle="dashed")
-    ax.legend()
+    ax.legend(ncol=3)
+    ax.set_ylim([0,2])
     ax.set_xlabel("Training Epoch")
     ax.set_ylabel("Training Epoch")
     plt.savefig("figures/lstmae_mse.png")
