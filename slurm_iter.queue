@@ -9,11 +9,6 @@
 ### Job name
 #SBATCH -J iter_agg
 
-### Partition (queue), select shared for GPU
-### Optionally specify a GPU type: --gres=gpu:rtx5000:1 or --gres=gpu:a100:1
-##SBATCH -p shared --gres=gpu:a100:1
-##SBATCH -p shared --gres=gpu:rtx5000:2
-
 #SBATCH -p standard
 
 ### TOTAL processors (number of tasks)

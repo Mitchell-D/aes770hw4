@@ -1,0 +1,150 @@
+/common/pkgs/cuda/cuda-11.4/lib64:/common/pkgs/cuda/cuda-11.4/extras/CUPTI/lib64:/rhome/mdodson/.conda/envs/learn/lib
+Tensorflow version: 2.4.1
+Num GPUs Available:  1
+[PhysicalDevice(name='/physical_device:CPU:0', device_type='CPU'), PhysicalDevice(name='/physical_device:XLA_CPU:0', device_type='XLA_CPU'), PhysicalDevice(name='/physical_device:XLA_GPU:0', device_type='XLA_GPU'), PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+Model: "model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 400, 22)]         0         
+_________________________________________________________________
+in_dist (TimeDistributed)    (None, 400, 128)          2944      
+_________________________________________________________________
+enc_bd_0 (Bidirectional)     (None, 400, 256)          263168    
+_________________________________________________________________
+enc_bnorm_0 (BatchNormalizat (None, 400, 256)          1024      
+_________________________________________________________________
+dropout (Dropout)            (None, 400, 256)          0         
+_________________________________________________________________
+enc_bd_1 (Bidirectional)     (None, 400, 256)          394240    
+_________________________________________________________________
+enc_bnorm_1 (BatchNormalizat (None, 400, 256)          1024      
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 400, 256)          0         
+_________________________________________________________________
+enc_bd_2 (Bidirectional)     (None, 256)               394240    
+_________________________________________________________________
+enc_bnorm_2 (BatchNormalizat (None, 256)               1024      
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 256)               0         
+_________________________________________________________________
+latent_projection (Dense)    (None, 64)                16448     
+_________________________________________________________________
+repeat_vector (RepeatVector) (None, 400, 64)           0         
+_________________________________________________________________
+dec_bd_0 (Bidirectional)     (None, 400, 256)          197632    
+_________________________________________________________________
+dec_bnorm_0 (BatchNormalizat (None, 400, 256)          1024      
+_________________________________________________________________
+dec_bd_1 (Bidirectional)     (None, 400, 256)          394240    
+_________________________________________________________________
+dec_bnorm_1 (BatchNormalizat (None, 400, 256)          1024      
+_________________________________________________________________
+dec_bd_2 (Bidirectional)     (None, 400, 256)          394240    
+_________________________________________________________________
+dec_bnorm_2 (BatchNormalizat (None, 400, 256)          1024      
+_________________________________________________________________
+out_dist (TimeDistributed)   (None, 400, 22)           5654      
+=================================================================
+Total params: 2,068,950
+Trainable params: 2,065,878
+Non-trainable params: 3,072
+_________________________________________________________________
+Compiling model
+Making generators
+Fitting model
+Epoch 1/600
+500/500 - 5361s - loss: 0.3910 - mse: 0.3910 - val_loss: 0.2806 - val_mse: 0.2806
+Epoch 2/600
+500/500 - 5380s - loss: 0.2970 - mse: 0.2970 - val_loss: 0.2580 - val_mse: 0.2580
+Epoch 3/600
+500/500 - 5341s - loss: 0.3093 - mse: 0.3093 - val_loss: 0.3206 - val_mse: 0.3206
+Epoch 4/600
+500/500 - 5392s - loss: 0.2939 - mse: 0.2939 - val_loss: 0.2392 - val_mse: 0.2392
+Epoch 5/600
+500/500 - 5536s - loss: 0.2968 - mse: 0.2968 - val_loss: 0.2743 - val_mse: 0.2743
+Epoch 6/600
+500/500 - 5531s - loss: 0.3068 - mse: 0.3068 - val_loss: 0.3189 - val_mse: 0.3189
+Epoch 7/600
+500/500 - 5322s - loss: 0.3101 - mse: 0.3101 - val_loss: 0.3146 - val_mse: 0.3146
+Epoch 8/600
+500/500 - 5335s - loss: 0.3039 - mse: 0.3039 - val_loss: 0.2928 - val_mse: 0.2928
+Epoch 9/600
+500/500 - 5339s - loss: 0.2819 - mse: 0.2819 - val_loss: 0.2476 - val_mse: 0.2476
+Epoch 10/600
+500/500 - 5339s - loss: 0.2749 - mse: 0.2749 - val_loss: 0.2520 - val_mse: 0.2520
+Epoch 11/600
+500/500 - 5551s - loss: 0.3082 - mse: 0.3082 - val_loss: 0.2639 - val_mse: 0.2639
+Epoch 12/600
+500/500 - 5557s - loss: 0.2747 - mse: 0.2747 - val_loss: 0.2348 - val_mse: 0.2348
+Epoch 13/600
+500/500 - 5537s - loss: 0.2632 - mse: 0.2632 - val_loss: 0.2336 - val_mse: 0.2336
+Epoch 14/600
+500/500 - 5536s - loss: 0.2711 - mse: 0.2711 - val_loss: 0.2313 - val_mse: 0.2313
+Epoch 15/600
+500/500 - 5338s - loss: 0.2561 - mse: 0.2561 - val_loss: 0.2234 - val_mse: 0.2234
+Epoch 16/600
+500/500 - 5510s - loss: 0.2532 - mse: 0.2532 - val_loss: 0.2285 - val_mse: 0.2285
+Epoch 17/600
+500/500 - 5560s - loss: 0.2498 - mse: 0.2498 - val_loss: 0.2254 - val_mse: 0.2254
+Epoch 18/600
+500/500 - 5559s - loss: 0.2507 - mse: 0.2507 - val_loss: 0.2235 - val_mse: 0.2235
+Epoch 19/600
+500/500 - 5560s - loss: 0.2436 - mse: 0.2436 - val_loss: 0.2255 - val_mse: 0.2255
+Epoch 20/600
+500/500 - 5551s - loss: 0.2457 - mse: 0.2457 - val_loss: 0.2201 - val_mse: 0.2201
+Epoch 21/600
+500/500 - 5324s - loss: 0.2537 - mse: 0.2537 - val_loss: 0.2271 - val_mse: 0.2271
+Epoch 22/600
+500/500 - 5326s - loss: 0.2455 - mse: 0.2455 - val_loss: 0.2157 - val_mse: 0.2157
+Epoch 23/600
+500/500 - 5336s - loss: 0.2412 - mse: 0.2412 - val_loss: 0.2158 - val_mse: 0.2158
+Epoch 24/600
+500/500 - 5332s - loss: 0.2424 - mse: 0.2424 - val_loss: 0.2151 - val_mse: 0.2151
+Epoch 25/600
+500/500 - 5352s - loss: 0.2383 - mse: 0.2383 - val_loss: 0.2151 - val_mse: 0.2151
+Epoch 26/600
+500/500 - 5514s - loss: 0.2400 - mse: 0.2400 - val_loss: 0.2115 - val_mse: 0.2115
+Epoch 27/600
+500/500 - 5490s - loss: 0.2374 - mse: 0.2374 - val_loss: 0.2159 - val_mse: 0.2159
+Epoch 28/600
+500/500 - 5453s - loss: 0.2350 - mse: 0.2350 - val_loss: 0.2145 - val_mse: 0.2145
+Epoch 29/600
+500/500 - 5358s - loss: 0.2356 - mse: 0.2356 - val_loss: 0.2108 - val_mse: 0.2108
+Epoch 30/600
+500/500 - 5340s - loss: 0.2326 - mse: 0.2326 - val_loss: 0.2130 - val_mse: 0.2130
+Epoch 31/600
+500/500 - 5314s - loss: 0.2330 - mse: 0.2330 - val_loss: 0.2089 - val_mse: 0.2089
+Epoch 32/600
+500/500 - 5326s - loss: 0.2300 - mse: 0.2300 - val_loss: 0.2133 - val_mse: 0.2133
+Epoch 33/600
+500/500 - 5420s - loss: 0.2315 - mse: 0.2315 - val_loss: 0.2068 - val_mse: 0.2068
+Epoch 34/600
+500/500 - 5448s - loss: 0.2290 - mse: 0.2290 - val_loss: 0.2116 - val_mse: 0.2116
+Epoch 35/600
+500/500 - 5419s - loss: 0.2309 - mse: 0.2309 - val_loss: 0.2109 - val_mse: 0.2109
+Epoch 36/600
+500/500 - 5429s - loss: 0.2332 - mse: 0.2332 - val_loss: 0.2072 - val_mse: 0.2072
+Epoch 37/600
+500/500 - 5371s - loss: 0.2238 - mse: 0.2238 - val_loss: 0.2066 - val_mse: 0.2066
+Epoch 38/600
+500/500 - 5316s - loss: 0.2266 - mse: 0.2266 - val_loss: 0.2038 - val_mse: 0.2038
+Epoch 39/600
+500/500 - 5334s - loss: 0.2268 - mse: 0.2268 - val_loss: 0.2079 - val_mse: 0.2079
+Epoch 40/600
+500/500 - 5317s - loss: 0.2223 - mse: 0.2223 - val_loss: 0.2022 - val_mse: 0.2022
+Epoch 41/600
+500/500 - 5323s - loss: 0.2257 - mse: 0.2257 - val_loss: 0.2121 - val_mse: 0.2121
+Epoch 42/600
+500/500 - 5324s - loss: 0.2248 - mse: 0.2248 - val_loss: 0.2010 - val_mse: 0.2010
+Epoch 43/600
+500/500 - 5335s - loss: 0.2199 - mse: 0.2199 - val_loss: 0.2083 - val_mse: 0.2083
+Epoch 44/600
+500/500 - 5333s - loss: 0.2245 - mse: 0.2245 - val_loss: 0.2024 - val_mse: 0.2024
+Epoch 45/600
+500/500 - 5319s - loss: 0.2222 - mse: 0.2222 - val_loss: 0.2032 - val_mse: 0.2032
+Epoch 46/600
+500/500 - 5291s - loss: 0.2214 - mse: 0.2214 - val_loss: 0.2062 - val_mse: 0.2062
+Epoch 47/600
+500/500 - 5322s - loss: 0.2171 - mse: 0.2171 - val_loss: 0.2010 - val_mse: 0.2010
+Epoch 48/600

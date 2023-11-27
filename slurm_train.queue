@@ -9,8 +9,8 @@
 
 ### Partition (queue), select shared for GPU
 ### Optionally specify a GPU type: --gres=gpu:rtx5000:1 or --gres=gpu:a100:1
-#SBATCH -p shared --gres=gpu:a100:1
-##SBATCH -p shared --gres=gpu:rtx5000:1
+##SBATCH -p shared --gres=gpu:a100:1
+#SBATCH -p shared --gres=gpu:rtx5000:1
 
 ### TOTAL processors (number of tasks)
 #SBATCH --ntasks 2
@@ -25,8 +25,8 @@
 #SBATCH --mail-type=END,FAIL
 
 ### Ouput files
-#SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/slurm_train.out # STDOUT
-#SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/slurm_train.err # STDERR
+#SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/slurm_train3.out ## STDOUT
+#SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/slurm_train3.err ## STDERR
 
 module load cuda
 
@@ -38,7 +38,6 @@ echo $LD_LIBRARY_PATH
 
 cd /rhome/mdodson/aes770hw4
 
-#Run code
 set runcmd = /rhome/mdodson/.conda/envs/learn/bin/python
 
 ${runcmd} -u lstm_ae.py

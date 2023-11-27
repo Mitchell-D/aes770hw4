@@ -1,0 +1,1 @@
+5x 64 node lstms enc and dec; 256 node latent space; .5 dropout between cells; batchnorm and bidirectional

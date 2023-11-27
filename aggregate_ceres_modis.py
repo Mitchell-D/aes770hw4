@@ -153,14 +153,14 @@ if __name__=="__main__":
     debug = True
     data_dir = Path("data")
     modis_swath_dir = data_dir.joinpath("modis")
-    agg_dir = Path("/rstor/mdodson/agg_ceres_modis")
+    agg_dir = Path("/rstor/mdodson/aes770hw4/testing")
 
-    year = 2021
+    year = 2019
     satellite = "terra"
     region = "seus"
     ## Max number of nearest modis to collect around each ceres footprint
     keep_closest = 400
-    workers = 30
+    workers = 20
     #workers = 1
 
     """ One ceres pkl contains all of that year/satellite data by swath """

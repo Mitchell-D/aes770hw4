@@ -131,7 +131,11 @@ if __name__=="__main__":
     #swaths_pkl = data_dir.joinpath("buffer/aqua_ceres_seus_2015.pkl")
 
     #swaths_pkl = data_dir.joinpath("buffer/terra_ceres_seus_2021.pkl")
-    swaths_pkl = data_dir.joinpath("buffer/aqua_ceres_seus_2021.pkl")
+    #swaths_pkl = data_dir.joinpath("buffer/aqua_ceres_seus_2021.pkl")
+
+    #swaths_pkl = data_dir.joinpath("buffer/terra_ceres_seus_2019.pkl")
+    swaths_pkl = data_dir.joinpath("buffer/aqua_ceres_seus_2019.pkl")
+
     modis_bands = [
             8,              # .41                       Near UV
             1,4,3,          # .64,.55,.46               (R,G,B)

@@ -25,6 +25,9 @@ print(f"Tensorflow version: {tf.__version__}")
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 print(tf.config.list_physical_devices())
 
+gpus = tf.config.experimental.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(gpus[0], True)
+
 def_lstm_kwargs = {
             ## output activation
             "activation":"tanh",
@@ -197,22 +200,12 @@ if __name__=="__main__":
     ## Directory with sub-directories for each model.
     model_parent_dir = Path("data/models/")
 
-    modis_train = zarr.Array(
-            store=zarr.storage.ZipStore(modis_train_path.as_posix(),mode="r"),
-            read_only=True,
-            )
-    modis_val = zarr.Array(
-            store=zarr.storage.ZipStore(modis_val_path.as_posix(),mode="r"),
-            read_only=True,
-            )
-    print(modis_train.shape, modis_val.shape)
-
     ## Identifying label for this model
-    model_name= "lstmae_2"
+    model_name= "lstmae_14"
     ## Size of batches in samples
-    batch_size = 128
+    batch_size = 32
     ## Batches to draw asynchronously from the generator
-    batch_buffer = 2
+    batch_buffer = 4
     ## Seed for subsampling training and validation data
     rand_seed = 20231121
     ## Indeces of features to train on
@@ -225,7 +218,7 @@ if __name__=="__main__":
 
     ## Define callbacks for model progress tracking
     c_early_stop = tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=8)
+            monitor="val_loss", patience=50)
     c_checkpoint = tf.keras.callbacks.ModelCheckpoint(
             monitor="val_loss", save_best_only=True,
             filepath=model_dir.joinpath(
@@ -237,11 +230,11 @@ if __name__=="__main__":
     model = basic_lstmae(
             seq_len=400,
             feat_len=len(modis_feat_idxs),
-            enc_nodes=[64, 64, 64],
-            dec_nodes=[64, 64, 64],
-            latent=64,
+            enc_nodes=[32, 32, 32, 32, 32, 32],
+            dec_nodes=[32, 32, 32, 32, 32, 32],
+            latent=32,
             latent_activation="sigmoid",
-            dropout_rate=0.0,
+            dropout_rate=0.2,
             batchnorm=True,
             mask_val=None,
             bidirectional=True,
@@ -283,19 +276,18 @@ if __name__=="__main__":
     ## Train the model on the generated tensors
     hist = model.fit(
             train_gen.batch(batch_size).prefetch(batch_buffer),
-            epochs=600,
+            epochs=1000,
             ## Number of batches to draw per epoch. Use full dataset by default
-            #steps_per_epoch=modis_train.shape[0]//batch_size,
-            steps_per_epoch=100, ## 12,800 training samples per epoch
+            steps_per_epoch=100, ## 3,200 samples per epoch
             validation_data=val_gen.batch(batch_size).prefetch(batch_buffer),
             ## batches of validation data to draw per epoch
-            validation_steps=10, ## 1,280 validation samples per epoch
+            validation_steps=25, ## 3,200 samples per validation
             validation_freq=1, ## Report validation loss each epoch
             callbacks=[
                 c_early_stop,
                 c_checkpoint,
                 c_csvlog,
-                ],
+               ],
             verbose=2,
             )
     model.save(model_dir.joinpath(model_name+".keras"))

@@ -1,0 +1,277 @@
+/common/pkgs/cuda/cuda-11.4/lib64:/common/pkgs/cuda/cuda-11.4/extras/CUPTI/lib64:/rhome/mdodson/.conda/envs/learn/lib
+Tensorflow version: 2.4.1
+Num GPUs Available:  1
+[PhysicalDevice(name='/physical_device:CPU:0', device_type='CPU'), PhysicalDevice(name='/physical_device:XLA_CPU:0', device_type='XLA_CPU'), PhysicalDevice(name='/physical_device:XLA_GPU:0', device_type='XLA_GPU'), PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+Model: "model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 400, 22)]         0         
+_________________________________________________________________
+in_dist (TimeDistributed)    (None, 400, 64)           1472      
+_________________________________________________________________
+enc_bd_0 (Bidirectional)     (None, 400, 128)          66048     
+_________________________________________________________________
+enc_bnorm_0 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+dropout (Dropout)            (None, 400, 128)          0         
+_________________________________________________________________
+enc_bd_1 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+enc_bnorm_1 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 400, 128)          0         
+_________________________________________________________________
+enc_bd_2 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+enc_bnorm_2 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 400, 128)          0         
+_________________________________________________________________
+enc_bd_3 (Bidirectional)     (None, 128)               98816     
+_________________________________________________________________
+enc_bnorm_3 (BatchNormalizat (None, 128)               512       
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 128)               0         
+_________________________________________________________________
+latent_projection (Dense)    (None, 64)                8256      
+_________________________________________________________________
+repeat_vector (RepeatVector) (None, 400, 64)           0         
+_________________________________________________________________
+dec_bd_0 (Bidirectional)     (None, 400, 128)          66048     
+_________________________________________________________________
+dec_bnorm_0 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+dec_bd_1 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+dec_bnorm_1 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+dec_bd_2 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+dec_bnorm_2 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+dec_bd_3 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+dec_bnorm_3 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+out_dist (TimeDistributed)   (None, 400, 22)           2838      
+=================================================================
+Total params: 741,654
+Trainable params: 739,606
+Non-trainable params: 2,048
+_________________________________________________________________
+Compiling model
+Making generators
+Fitting model
+Epoch 1/600
+500/500 - 465s - loss: 0.4858 - mse: 0.4858 - val_loss: 0.2933 - val_mse: 0.2933
+Epoch 2/600
+500/500 - 501s - loss: 0.3123 - mse: 0.3123 - val_loss: 0.2526 - val_mse: 0.2526
+Epoch 3/600
+500/500 - 433s - loss: 0.2804 - mse: 0.2804 - val_loss: 0.2275 - val_mse: 0.2275
+Epoch 4/600
+500/500 - 328s - loss: 0.2670 - mse: 0.2670 - val_loss: 0.2272 - val_mse: 0.2272
+Epoch 5/600
+500/500 - 252s - loss: 0.2559 - mse: 0.2559 - val_loss: 0.2192 - val_mse: 0.2192
+Epoch 6/600
+500/500 - 128s - loss: 0.2552 - mse: 0.2552 - val_loss: 0.2295 - val_mse: 0.2295
+Epoch 7/600
+500/500 - 127s - loss: 0.2594 - mse: 0.2594 - val_loss: 0.2178 - val_mse: 0.2178
+Epoch 8/600
+500/500 - 128s - loss: 0.2518 - mse: 0.2518 - val_loss: 0.2147 - val_mse: 0.2147
+Epoch 9/600
+500/500 - 133s - loss: 0.2461 - mse: 0.2461 - val_loss: 0.2128 - val_mse: 0.2128
+Epoch 10/600
+500/500 - 199s - loss: 0.2413 - mse: 0.2413 - val_loss: 0.2079 - val_mse: 0.2079
+Epoch 11/600
+500/500 - 204s - loss: 0.2532 - mse: 0.2532 - val_loss: 0.2165 - val_mse: 0.2165
+Epoch 12/600
+500/500 - 211s - loss: 0.2404 - mse: 0.2404 - val_loss: 0.2029 - val_mse: 0.2029
+Epoch 13/600
+500/500 - 220s - loss: 0.2592 - mse: 0.2592 - val_loss: 0.2163 - val_mse: 0.2163
+Epoch 14/600
+500/500 - 201s - loss: 0.2514 - mse: 0.2514 - val_loss: 0.4953 - val_mse: 0.4953
+Epoch 15/600
+500/500 - 152s - loss: 0.2537 - mse: 0.2537 - val_loss: 0.2172 - val_mse: 0.2172
+Epoch 16/600
+500/500 - 126s - loss: 0.2348 - mse: 0.2348 - val_loss: 0.2051 - val_mse: 0.2051
+Epoch 17/600
+500/500 - 126s - loss: 0.2301 - mse: 0.2301 - val_loss: 0.1994 - val_mse: 0.1994
+Epoch 18/600
+500/500 - 129s - loss: 0.2302 - mse: 0.2302 - val_loss: 0.2003 - val_mse: 0.2003
+Epoch 19/600
+500/500 - 125s - loss: 0.2517 - mse: 0.2517 - val_loss: 0.2442 - val_mse: 0.2442
+Epoch 20/600
+500/500 - 128s - loss: 0.2367 - mse: 0.2367 - val_loss: 0.2074 - val_mse: 0.2074
+Epoch 21/600
+500/500 - 129s - loss: 0.2298 - mse: 0.2298 - val_loss: 0.2051 - val_mse: 0.2051
+Epoch 22/600
+500/500 - 126s - loss: 0.2247 - mse: 0.2247 - val_loss: 0.1912 - val_mse: 0.1912
+Epoch 23/600
+500/500 - 129s - loss: 0.2223 - mse: 0.2223 - val_loss: 0.2008 - val_mse: 0.2008
+Epoch 24/600
+500/500 - 129s - loss: 0.2204 - mse: 0.2204 - val_loss: 0.1899 - val_mse: 0.1899
+Epoch 25/600
+500/500 - 129s - loss: 0.2170 - mse: 0.2170 - val_loss: 0.1951 - val_mse: 0.1951
+Epoch 26/600
+500/500 - 126s - loss: 0.2187 - mse: 0.2187 - val_loss: 0.1875 - val_mse: 0.1875
+Epoch 27/600
+500/500 - 127s - loss: 0.2192 - mse: 0.2192 - val_loss: 0.1884 - val_mse: 0.1884
+Epoch 28/600
+500/500 - 128s - loss: 0.2223 - mse: 0.2223 - val_loss: 0.1936 - val_mse: 0.1936
+Epoch 29/600
+500/500 - 127s - loss: 0.2164 - mse: 0.2164 - val_loss: 0.1976 - val_mse: 0.1976
+Epoch 30/600
+500/500 - 128s - loss: 0.2200 - mse: 0.2200 - val_loss: 0.2045 - val_mse: 0.2045
+Epoch 31/600
+500/500 - 127s - loss: 0.2203 - mse: 0.2203 - val_loss: 0.1855 - val_mse: 0.1855
+Epoch 32/600
+500/500 - 139s - loss: 0.2139 - mse: 0.2139 - val_loss: 0.1859 - val_mse: 0.1859
+Epoch 33/600
+500/500 - 126s - loss: 0.2477 - mse: 0.2477 - val_loss: 0.1960 - val_mse: 0.1960
+Epoch 34/600
+500/500 - 130s - loss: 0.2180 - mse: 0.2180 - val_loss: 0.1869 - val_mse: 0.1869
+Epoch 35/600
+500/500 - 126s - loss: 0.2141 - mse: 0.2141 - val_loss: 0.1884 - val_mse: 0.1884
+Epoch 36/600
+500/500 - 128s - loss: 0.2117 - mse: 0.2117 - val_loss: 0.1841 - val_mse: 0.1841
+Epoch 37/600
+500/500 - 126s - loss: 0.2095 - mse: 0.2095 - val_loss: 0.1859 - val_mse: 0.1859
+Epoch 38/600
+500/500 - 127s - loss: 0.2164 - mse: 0.2164 - val_loss: 0.4843 - val_mse: 0.4843
+Epoch 39/600
+500/500 - 126s - loss: 0.2245 - mse: 0.2245 - val_loss: 0.1896 - val_mse: 0.1896
+Epoch 40/600
+500/500 - 128s - loss: 0.2119 - mse: 0.2119 - val_loss: 0.1911 - val_mse: 0.1911
+Epoch 41/600
+500/500 - 128s - loss: 0.2197 - mse: 0.2197 - val_loss: 0.2437 - val_mse: 0.2437
+Epoch 42/600
+500/500 - 124s - loss: 0.2270 - mse: 0.2270 - val_loss: 0.1947 - val_mse: 0.1947
+Epoch 43/600
+500/500 - 127s - loss: 0.2106 - mse: 0.2106 - val_loss: 0.1849 - val_mse: 0.1849
+Epoch 44/600
+500/500 - 127s - loss: 0.2123 - mse: 0.2123 - val_loss: 0.1837 - val_mse: 0.1837
+Epoch 45/600
+500/500 - 129s - loss: 0.2104 - mse: 0.2104 - val_loss: 0.1833 - val_mse: 0.1833
+Epoch 46/600
+500/500 - 125s - loss: 0.2086 - mse: 0.2086 - val_loss: 0.1833 - val_mse: 0.1833
+Epoch 47/600
+500/500 - 129s - loss: 0.2069 - mse: 0.2069 - val_loss: 0.1837 - val_mse: 0.1837
+Epoch 48/600
+500/500 - 128s - loss: 0.2133 - mse: 0.2133 - val_loss: 0.1937 - val_mse: 0.1937
+Epoch 49/600
+500/500 - 127s - loss: 0.2097 - mse: 0.2097 - val_loss: 0.1818 - val_mse: 0.1818
+Epoch 50/600
+500/500 - 127s - loss: 0.2095 - mse: 0.2095 - val_loss: 0.1824 - val_mse: 0.1824
+Epoch 51/600
+500/500 - 127s - loss: 0.2084 - mse: 0.2084 - val_loss: 0.1814 - val_mse: 0.1814
+Epoch 52/600
+500/500 - 134s - loss: 0.2088 - mse: 0.2088 - val_loss: 0.1861 - val_mse: 0.1861
+Epoch 53/600
+500/500 - 125s - loss: 0.2080 - mse: 0.2080 - val_loss: 0.2009 - val_mse: 0.2009
+Epoch 54/600
+500/500 - 129s - loss: 0.2241 - mse: 0.2241 - val_loss: 0.2049 - val_mse: 0.2049
+Epoch 55/600
+500/500 - 129s - loss: 0.2126 - mse: 0.2126 - val_loss: 0.1834 - val_mse: 0.1834
+Epoch 56/600
+500/500 - 128s - loss: 0.2063 - mse: 0.2063 - val_loss: 0.1838 - val_mse: 0.1838
+Epoch 57/600
+500/500 - 137s - loss: 0.2045 - mse: 0.2045 - val_loss: 0.1834 - val_mse: 0.1834
+Epoch 58/600
+500/500 - 135s - loss: 0.2078 - mse: 0.2078 - val_loss: 0.1818 - val_mse: 0.1818
+Epoch 59/600
+500/500 - 127s - loss: 0.2127 - mse: 0.2127 - val_loss: 0.1824 - val_mse: 0.1824
+Epoch 60/600
+500/500 - 151s - loss: 0.2063 - mse: 0.2063 - val_loss: 0.1841 - val_mse: 0.1841
+Epoch 61/600
+500/500 - 128s - loss: 0.2075 - mse: 0.2075 - val_loss: 0.1816 - val_mse: 0.1816
+Epoch 62/600
+500/500 - 131s - loss: 0.2089 - mse: 0.2089 - val_loss: 0.1874 - val_mse: 0.1874
+Epoch 63/600
+500/500 - 126s - loss: 0.2103 - mse: 0.2103 - val_loss: 0.1811 - val_mse: 0.1811
+Epoch 64/600
+500/500 - 128s - loss: 0.2084 - mse: 0.2084 - val_loss: 0.1868 - val_mse: 0.1868
+Epoch 65/600
+500/500 - 129s - loss: 0.2075 - mse: 0.2075 - val_loss: 0.1824 - val_mse: 0.1824
+Epoch 66/600
+500/500 - 129s - loss: 0.2050 - mse: 0.2050 - val_loss: 0.1806 - val_mse: 0.1806
+Epoch 67/600
+500/500 - 128s - loss: 0.2030 - mse: 0.2030 - val_loss: 0.1830 - val_mse: 0.1830
+Epoch 68/600
+500/500 - 129s - loss: 0.2038 - mse: 0.2038 - val_loss: 0.1796 - val_mse: 0.1796
+Epoch 69/600
+500/500 - 125s - loss: 0.2096 - mse: 0.2096 - val_loss: 0.1840 - val_mse: 0.1840
+Epoch 70/600
+500/500 - 134s - loss: 0.2095 - mse: 0.2095 - val_loss: 0.1833 - val_mse: 0.1833
+Epoch 71/600
+500/500 - 128s - loss: 0.2064 - mse: 0.2064 - val_loss: 0.1800 - val_mse: 0.1800
+Epoch 72/600
+500/500 - 127s - loss: 0.2059 - mse: 0.2059 - val_loss: 0.2584 - val_mse: 0.2584
+Epoch 73/600
+500/500 - 132s - loss: 0.2070 - mse: 0.2070 - val_loss: 0.1824 - val_mse: 0.1824
+Epoch 74/600
+500/500 - 125s - loss: 0.2050 - mse: 0.2050 - val_loss: 0.1889 - val_mse: 0.1889
+Epoch 75/600
+500/500 - 132s - loss: 0.2045 - mse: 0.2045 - val_loss: 0.1831 - val_mse: 0.1831
+Epoch 76/600
+500/500 - 132s - loss: 0.2035 - mse: 0.2035 - val_loss: 0.1788 - val_mse: 0.1788
+Epoch 77/600
+500/500 - 127s - loss: 0.2027 - mse: 0.2027 - val_loss: 0.1922 - val_mse: 0.1922
+Epoch 78/600
+500/500 - 129s - loss: 0.2013 - mse: 0.2013 - val_loss: 0.1787 - val_mse: 0.1787
+Epoch 79/600
+500/500 - 127s - loss: 0.2056 - mse: 0.2056 - val_loss: 0.1851 - val_mse: 0.1851
+Epoch 80/600
+500/500 - 128s - loss: 0.2020 - mse: 0.2020 - val_loss: 0.1837 - val_mse: 0.1837
+Epoch 81/600
+500/500 - 127s - loss: 0.1996 - mse: 0.1996 - val_loss: 0.1808 - val_mse: 0.1808
+Epoch 82/600
+500/500 - 132s - loss: 0.2102 - mse: 0.2102 - val_loss: 0.2922 - val_mse: 0.2922
+Epoch 83/600
+500/500 - 130s - loss: 0.2100 - mse: 0.2100 - val_loss: 0.1880 - val_mse: 0.1880
+Epoch 84/600
+500/500 - 127s - loss: 0.2047 - mse: 0.2047 - val_loss: 0.1792 - val_mse: 0.1792
+Epoch 85/600
+500/500 - 133s - loss: 0.2023 - mse: 0.2023 - val_loss: 0.1781 - val_mse: 0.1781
+Epoch 86/600
+500/500 - 131s - loss: 0.2016 - mse: 0.2016 - val_loss: 0.1786 - val_mse: 0.1786
+Epoch 87/600
+500/500 - 126s - loss: 0.2000 - mse: 0.2000 - val_loss: 0.1790 - val_mse: 0.1790
+Epoch 88/600
+500/500 - 162s - loss: 0.2044 - mse: 0.2044 - val_loss: 0.1950 - val_mse: 0.1950
+Epoch 89/600
+500/500 - 127s - loss: 0.2033 - mse: 0.2033 - val_loss: 0.1782 - val_mse: 0.1782
+Epoch 90/600
+500/500 - 141s - loss: 0.2011 - mse: 0.2011 - val_loss: 0.1795 - val_mse: 0.1795
+Epoch 91/600
+500/500 - 132s - loss: 0.2001 - mse: 0.2001 - val_loss: 0.1786 - val_mse: 0.1786
+Epoch 92/600
+500/500 - 133s - loss: 0.2033 - mse: 0.2033 - val_loss: 0.1789 - val_mse: 0.1789
+Epoch 93/600
+500/500 - 130s - loss: 0.1999 - mse: 0.1999 - val_loss: 0.1779 - val_mse: 0.1779
+Epoch 94/600
+500/500 - 137s - loss: 0.2010 - mse: 0.2010 - val_loss: 0.1778 - val_mse: 0.1778
+Epoch 95/600
+500/500 - 131s - loss: 0.2007 - mse: 0.2007 - val_loss: 0.1789 - val_mse: 0.1789
+Epoch 96/600
+500/500 - 130s - loss: 0.2011 - mse: 0.2011 - val_loss: 0.1811 - val_mse: 0.1811
+Epoch 97/600
+500/500 - 137s - loss: 0.2094 - mse: 0.2094 - val_loss: 0.1877 - val_mse: 0.1877
+Epoch 98/600
+500/500 - 131s - loss: 0.2039 - mse: 0.2039 - val_loss: 0.1795 - val_mse: 0.1795
+Epoch 99/600
+500/500 - 129s - loss: 0.2015 - mse: 0.2015 - val_loss: 0.1779 - val_mse: 0.1779
+Epoch 100/600
+500/500 - 132s - loss: 0.1998 - mse: 0.1998 - val_loss: 0.1783 - val_mse: 0.1783
+Epoch 101/600
+500/500 - 131s - loss: 0.2006 - mse: 0.2006 - val_loss: 0.1799 - val_mse: 0.1799
+Epoch 102/600
+500/500 - 140s - loss: 0.1994 - mse: 0.1994 - val_loss: 0.1787 - val_mse: 0.1787
+Epoch 103/600
+500/500 - 132s - loss: 0.2016 - mse: 0.2016 - val_loss: 0.1976 - val_mse: 0.1976
+Epoch 104/600
+500/500 - 130s - loss: 0.2051 - mse: 0.2051 - val_loss: 0.1803 - val_mse: 0.1803
+Epoch 105/600
+500/500 - 129s - loss: 0.2036 - mse: 0.2036 - val_loss: 0.1792 - val_mse: 0.1792
+Epoch 106/600
+500/500 - 129s - loss: 0.2014 - mse: 0.2014 - val_loss: 0.1805 - val_mse: 0.1805

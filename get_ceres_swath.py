@@ -258,7 +258,8 @@ if __name__=="__main__":
     ref_jday = 2444239.5
     ref_gday = datetime(year=1980,month=1,day=1)
 
-    sy = [(sat,year) for year in (2015,2017,2021) for sat in ("terra", "aqua")]
+    #sy = [(sat,year) for year in (2015,2017,2021) for sat in ("terra", "aqua")]
+    sy = [(sat,year) for year in (2019,) for sat in ("terra", "aqua")]
     for sat,year in sy:
         t0,tf = datetime(year,1,1),datetime(year,12,31,23,59,59,999999)
         ceres_file = data_dir.joinpath(
@@ -267,6 +268,7 @@ if __name__=="__main__":
 
         ## process only one CERES order
         ceres = FG1D(*parse_ceres(ceres_file))
+
         '''
         """ Load combined CERES granules """
         ## Combine all ceres bands in the list
@@ -289,8 +291,8 @@ if __name__=="__main__":
         ceres = FG1D(buf_labels, buf_data)
         '''
 
-        #print(f"footprints, features : {ceres.data().shape}")
-        #print(f"unique days: {np.unique(np.round(ceres.data('jday'))).size}")
+        print(f"footprints, features : {ceres.data().shape}")
+        print(f"unique days: {np.unique(np.round(ceres.data('jday'))).size}")
 
         """ Swap julian calendar for epoch seconds """
         epoch = np.array([jday_to_epoch(jday, ref_jday, ref_gday)

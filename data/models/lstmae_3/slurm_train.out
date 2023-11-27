@@ -1,0 +1,99 @@
+/common/pkgs/cuda/cuda-11.4/lib64:/common/pkgs/cuda/cuda-11.4/extras/CUPTI/lib64:/rhome/mdodson/.conda/envs/learn/lib
+Tensorflow version: 2.4.1
+Num GPUs Available:  1
+[PhysicalDevice(name='/physical_device:CPU:0', device_type='CPU'), PhysicalDevice(name='/physical_device:XLA_CPU:0', device_type='XLA_CPU'), PhysicalDevice(name='/physical_device:XLA_GPU:0', device_type='XLA_GPU'), PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+Model: "model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 400, 22)]         0         
+_________________________________________________________________
+in_dist (TimeDistributed)    (None, 400, 64)           1472      
+_________________________________________________________________
+enc_bd_0 (Bidirectional)     (None, 400, 128)          66048     
+_________________________________________________________________
+enc_bnorm_0 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+enc_bd_1 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+enc_bnorm_1 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+enc_bd_2 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+enc_bnorm_2 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+enc_bd_3 (Bidirectional)     (None, 128)               98816     
+_________________________________________________________________
+enc_bnorm_3 (BatchNormalizat (None, 128)               512       
+_________________________________________________________________
+latent_projection (Dense)    (None, 64)                8256      
+_________________________________________________________________
+repeat_vector (RepeatVector) (None, 400, 64)           0         
+_________________________________________________________________
+dec_bd_0 (Bidirectional)     (None, 400, 128)          66048     
+_________________________________________________________________
+dec_bnorm_0 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+dec_bd_1 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+dec_bnorm_1 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+dec_bd_2 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+dec_bnorm_2 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+dec_bd_3 (Bidirectional)     (None, 400, 128)          98816     
+_________________________________________________________________
+dec_bnorm_3 (BatchNormalizat (None, 400, 128)          512       
+_________________________________________________________________
+out_dist (TimeDistributed)   (None, 400, 22)           2838      
+=================================================================
+Total params: 741,654
+Trainable params: 739,606
+Non-trainable params: 2,048
+_________________________________________________________________
+Compiling model
+Making generators
+Fitting model
+Epoch 1/600
+500/500 - 1924s - loss: 0.4356 - mse: 0.4356 - val_loss: 0.2798 - val_mse: 0.2798
+Epoch 2/600
+500/500 - 686s - loss: 0.2822 - mse: 0.2822 - val_loss: 0.2340 - val_mse: 0.2340
+Epoch 3/600
+500/500 - 633s - loss: 0.2559 - mse: 0.2559 - val_loss: 0.2127 - val_mse: 0.2127
+Epoch 4/600
+500/500 - 437s - loss: 0.2486 - mse: 0.2486 - val_loss: 0.2240 - val_mse: 0.2240
+Epoch 5/600
+500/500 - 320s - loss: 0.2372 - mse: 0.2372 - val_loss: 0.2118 - val_mse: 0.2118
+Epoch 6/600
+500/500 - 239s - loss: 0.2467 - mse: 0.2467 - val_loss: 0.2097 - val_mse: 0.2097
+Epoch 7/600
+500/500 - 205s - loss: 0.2394 - mse: 0.2394 - val_loss: 0.2373 - val_mse: 0.2373
+Epoch 8/600
+500/500 - 203s - loss: 0.2385 - mse: 0.2385 - val_loss: 0.2352 - val_mse: 0.2352
+Epoch 9/600
+500/500 - 204s - loss: 0.2343 - mse: 0.2343 - val_loss: 0.2492 - val_mse: 0.2492
+Epoch 10/600
+500/500 - 205s - loss: 0.2642 - mse: 0.2642 - val_loss: 0.2967 - val_mse: 0.2967
+Epoch 11/600
+500/500 - 201s - loss: 0.2650 - mse: 0.2650 - val_loss: 0.9586 - val_mse: 0.9586
+Epoch 12/600
+500/500 - 204s - loss: 0.2671 - mse: 0.2671 - val_loss: 0.2231 - val_mse: 0.2231
+Epoch 13/600
+500/500 - 205s - loss: 0.2362 - mse: 0.2362 - val_loss: 0.2060 - val_mse: 0.2060
+Epoch 14/600
+500/500 - 200s - loss: 0.2350 - mse: 0.2350 - val_loss: 0.2127 - val_mse: 0.2127
+Epoch 15/600
+500/500 - 206s - loss: 0.2221 - mse: 0.2221 - val_loss: 0.2163 - val_mse: 0.2163
+Epoch 16/600
+500/500 - 202s - loss: 0.2294 - mse: 0.2294 - val_loss: 0.3906 - val_mse: 0.3906
+Epoch 17/600
+500/500 - 205s - loss: 0.2496 - mse: 0.2496 - val_loss: 0.2316 - val_mse: 0.2316
+Epoch 18/600
+500/500 - 203s - loss: 0.2306 - mse: 0.2306 - val_loss: 0.2177 - val_mse: 0.2177
+Epoch 19/600
+500/500 - 204s - loss: 0.2442 - mse: 0.2442 - val_loss: 0.3401 - val_mse: 0.3401
+Epoch 20/600
+500/500 - 202s - loss: 0.2537 - mse: 0.2537 - val_loss: 0.2393 - val_mse: 0.2393
+Epoch 21/600
+500/500 - 205s - loss: 0.2345 - mse: 0.2345 - val_loss: 0.2167 - val_mse: 0.2167

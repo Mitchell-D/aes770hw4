@@ -1,0 +1,1 @@
+256 -> 128 -> latent -> 128 -> 256; 128 node latent space; .3 dropout between cells; batchnorm and bidirectional

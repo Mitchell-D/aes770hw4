@@ -308,24 +308,28 @@ def swaths_to_zarr(
     return (C, M)
 
 if __name__=="__main__":
-    agg_dir = Path("/rstor/mdodson/aes770hw4/validation")
-    ceres_zarr_path = Path("/rstor/mdodson/aes770hw4/ceres_validation.zip")
-    modis_zarr_path = Path("/rstor/mdodson/aes770hw4/modis_validation.zip")
+    #agg_dir = Path("/rstor/mdodson/aes770hw4/validation")
+    #ceres_zarr_path = Path("/rstor/mdodson/aes770hw4/ceres_validation.zip")
+    #modis_zarr_path = Path("/rstor/mdodson/aes770hw4/modis_validation.zip")
     #agg_dir = Path("/rstor/mdodson/aes770hw4/training")
     #ceres_zarr_path = Path("/rstor/mdodson/aes770hw4/ceres_training.zip")
     #modis_zarr_path = Path("/rstor/mdodson/aes770hw4/modis_training.zip")
+    agg_dir = Path("/rstor/mdodson/aes770hw4/testing")
+    ceres_zarr_path = Path("/rstor/mdodson/aes770hw4/ceres_testing.zip")
+    modis_zarr_path = Path("/rstor/mdodson/aes770hw4/modis_testing.zip")
     workers = 1
 
-    '''
+    #'''
+    """ Remove NaN values from all of the swaths in the aggregated pkls """
     swath_files = [f for f in agg_dir.iterdir()]
     terra = tuple((datetime.fromtimestamp(int(f.stem.split("_")[-1])), f)
-            for f in agg_files if "terra" in f.name)
+            for f in swath_files if "terra" in f.name)
     aqua = tuple((datetime.fromtimestamp(int(f.stem.split("_")[-1])), f)
-            for f in agg_files if "aqua" in f.name)
+            for f in swath_files if "aqua" in f.name)
     swaths = (*terra, *aqua)
-    #mp_remove_nan(swath_list = (*terra, *aqua), workers=workers)
+    mp_remove_nan(swath_list = (*terra, *aqua), workers=workers)
     #print(mp_swath_size(swaths, workers))
-    '''
+    #'''
 
     #'''
     """ Make gauss-normalized and distance-capped arrays of all swaths """
@@ -334,7 +338,7 @@ if __name__=="__main__":
     mmean = np.array(list(zip(*modis_means))[1])
     mstdev = np.array(list(zip(*modis_stdevs))[1])
 
-    '''
+    #'''
     swath_paths = (p for p in agg_dir.iterdir() if "pkl" in p.name)
     swaths = (pkl.load(p.open("rb")) for p in swath_paths)
     swaths_to_zarr(
@@ -342,13 +346,13 @@ if __name__=="__main__":
             ceres_mean_array=cmean, modis_mean_array=mmean,
             ceres_stdev_array=cstdev, modis_stdev_array=mstdev,
             )
-    '''
+    #'''
 
     #ceres = zarr.Array(ceres_zarr_path, read_only=True)
-    modis = zarr.Array(modis_zarr_path, read_only=True)
+    #modis = zarr.Array(modis_zarr_path, read_only=True)
 
-    X = modis[::12,:,-2]*mstdev[-2]+mmean[-2]
-    print(np.average(X), np.std(X))
+    #X = modis[::12,:,-2]*mstdev[-2]+mmean[-2]
+    #print(np.average(X), np.std(X))
 
     #'''
     """ use a subset of the data to estimate mean/stdev """
