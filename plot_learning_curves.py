@@ -30,13 +30,15 @@ if __name__=="__main__":
 
     ## iterate over models plotting the above field
     for i in range(len(models)):
-        color = cm(i//2*2.0/len(models))
-        ax.plot(cdict["epoch"][i], cdict["mse"][i], label=models[i],
-                color=color, linestyle="solid")
+        color = cm(i/len(models))
+        #ax.plot(cdict["epoch"][i], cdict["mse"][i], label=models[i],
+        #        color=color, linestyle="solid", linewidth=1)
         ax.plot(cdict["epoch"][i], cdict["val_mse"][i], label=models[i],
-                color=color, linestyle="dashed")
+                color=color, linestyle="solid",linewidth=1)
     ax.legend(ncol=3)
-    ax.set_ylim([0,2])
+    ax.set_ylim([.1,1])
+    ax.set_title("Validation MSE Learning Curve")
+    ax.set_xlim([0,450])
     ax.set_xlabel("Training Epoch")
-    ax.set_ylabel("Training Epoch")
-    plt.savefig("figures/lstmae_mse.png")
+    ax.set_ylabel("Gaussian-normalized MSE")
+    plt.savefig("figures/lstmae_mse-val.png", dpi=800)
