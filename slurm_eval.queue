@@ -1,0 +1,30 @@
+#!/bin/csh
+### SLURM batch script
+
+### Email address
+#SBATCH --mail-user=mtd0012@uah.edu
+
+### Job name
+#SBATCH -J eval_lstmae
+
+### TOTAL processors (number of tasks)
+#SBATCH --ntasks 2
+
+### total run time estimate (D-HH:MM)
+#SBATCH -t 0-06:00
+
+### memory (MB per CPU)
+#SBATCH --mem-per-cpu=32G
+
+### Mail to user on job done and fail
+#SBATCH --mail-type=END,FAIL
+
+### Ouput files
+#SBATCH -o /rhome/mdodson/aes770hw4/data/slurm/slurm_eval.out ## STDOUT
+#SBATCH -e /rhome/mdodson/aes770hw4/data/slurm/slurm_eval.err ## STDERR
+
+cd /rhome/mdodson/aes770hw4
+
+set runcmd = /rhome/mdodson/.conda/envs/learn/bin/python
+
+${runcmd} -u lstm_eval.py

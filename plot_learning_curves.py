@@ -5,16 +5,20 @@ import matplotlib.pyplot as plt
 
 def parse_csv(csv_path:Path):
     """ """
-    epoch,loss,mse,val_loss,val_mse = zip(*map(lambda l: map(float,l),
+    #epoch,loss,mse,val_loss,val_mse = zip(*map(lambda l: map(float,l),
+    #    [l.strip().split(",") for l in csv_path.open("r").readlines()][1:]))
+    epoch,loss,val_loss= zip(*map(lambda l: map(float,l),
         [l.strip().split(",") for l in csv_path.open("r").readlines()][1:]))
-    return {"epoch":epoch, "loss":loss, "mse":mse,
-            "val_loss":val_loss, "val_mse":val_mse}
+    #return {"epoch":epoch, "loss":loss, "mse":mse,
+    #        "val_loss":val_loss, "val_mse":val_mse}
+    return {"epoch":epoch, "loss":loss, "val_loss":val_loss}
 
 if __name__=="__main__":
     model_root_dir = Path("data/models")
+    id_str = "lstmed"
     progress_csvs = [
             [p.name,next(f for f in p.iterdir() if f.name=="prog.csv")]
-            for p in model_root_dir.iterdir()]
+            for p in model_root_dir.iterdir() if id_str in p.name]
 
     ## Parse all the CSV files in the models directory tree
     models,curves = zip(*[(model,parse_csv(path))
@@ -33,7 +37,7 @@ if __name__=="__main__":
         color = cm(i/len(models))
         #ax.plot(cdict["epoch"][i], cdict["mse"][i], label=models[i],
         #        color=color, linestyle="solid", linewidth=1)
-        ax.plot(cdict["epoch"][i], cdict["val_mse"][i], label=models[i],
+        ax.plot(cdict["epoch"][i], cdict["val_loss"][i], label=models[i],
                 color=color, linestyle="solid",linewidth=1)
     ax.legend(ncol=3)
     ax.set_ylim([.1,1])
@@ -41,4 +45,5 @@ if __name__=="__main__":
     ax.set_xlim([0,450])
     ax.set_xlabel("Training Epoch")
     ax.set_ylabel("Gaussian-normalized MSE")
-    plt.savefig("figures/lstmae_mse-val.png", dpi=800)
+    #plt.savefig("figures/lstmae_mse-val.png", dpi=800)
+    plt.savefig("figures/lstmed_mse-val.png", dpi=800)
