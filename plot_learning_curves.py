@@ -36,14 +36,17 @@ if __name__=="__main__":
     for i in range(len(models)):
         color = cm(i/len(models))
         #ax.plot(cdict["epoch"][i], cdict["mse"][i], label=models[i],
-        #        color=color, linestyle="solid", linewidth=1)
-        ax.plot(cdict["epoch"][i], cdict["val_loss"][i], label=models[i],
+        #ax.plot(cdict["epoch"][i], cdict["val_loss"][i], label=models[i],
+        ax.plot(cdict["epoch"][i], cdict["loss"][i], label=models[i]+" loss",
                 color=color, linestyle="solid",linewidth=1)
-    ax.legend(ncol=3)
-    ax.set_ylim([.1,1])
-    ax.set_title("Validation MSE Learning Curve")
+        ax.plot(cdict["epoch"][i], cdict["val_loss"][i], label=models[i]+" val_loss",
+                color=color, linestyle="dashed", linewidth=1)
+    ax.legend(ncol=2)
+    ax.set_ylim([0,.35])
+    #ax.set_title("Validation MSE Learning Curve")
+    ax.set_title("Decoder Custom-loss Learning Curves")
     ax.set_xlim([0,450])
     ax.set_xlabel("Training Epoch")
     ax.set_ylabel("Gaussian-normalized MSE")
     #plt.savefig("figures/lstmae_mse-val.png", dpi=800)
-    plt.savefig("figures/lstmed_mse-val.png", dpi=800)
+    plt.savefig("figures/lstmed_loss.png", dpi=800)
