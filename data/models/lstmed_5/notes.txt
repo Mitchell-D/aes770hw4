@@ -1,0 +1,7 @@
+70% band loss
+
+20% dropout
+
+[32, 64, 128] node decoder
+
+uses lstmae_1.keras

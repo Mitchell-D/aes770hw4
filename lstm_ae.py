@@ -8,6 +8,7 @@ import pickle as pkl
 import zarr
 import numpy as np
 import os
+import sys
 
 #import keras_tuner
 import tensorflow as tf
@@ -164,7 +165,8 @@ def basic_lstmae(
     return full#, encoder, decoder
 
 def lstm_decoder(encoder, seq_len, feat_len, dec_nodes,
-        bidirectional=False, batchnorm=True, dec_lstm_kwargs={}):
+        dropout_rate=0.0, bidirectional=False, batchnorm=True,
+        dec_lstm_kwargs={}):
     """ Extends an encoder with a new stacked lstm decoder """
     seq_in = RepeatVector(seq_len)(encoder.output)
     dec_stack = get_lstm_stack(
@@ -174,10 +176,71 @@ def lstm_decoder(encoder, seq_len, feat_len, dec_nodes,
             return_seq=True,
             bidirectional=bidirectional,
             lstm_kwargs=dec_lstm_kwargs,
+            dropout_rate=dropout_rate,
             )
     dec_dist = Dense(feat_len, activation="linear", name="out_projection")
     dec_out = TimeDistributed(dec_dist, name="out_dist")(dec_stack)
     return Model(encoder.input, dec_out)
+
+def get_agg_loss(band_ratio, ceres_band_cutoff_idx=2):
+    """
+    Returns a loss function balancing flux and spatial features, where the
+    spatial features are predicted with pixelwise MSE, and the flux features
+    are averaged before being compared to the bulk CERES values
+    (which are copied along the 2nd axis; identical for all sequence elements)
+
+    Expects (B,S,F) shaped arrays for B batch samples, S sequence elements,
+    and F features. The F features contain flux values up to the cutoff index
+    for the 3rd (final) axis, then spatial values (ie dist, azimuth, etc).
+    """
+    @tf.function
+    @tf.autograph.experimental.do_not_convert
+    def agg_loss(y_true, y_pred):
+        """ """
+        t_space = y_true[:,:,ceres_band_cutoff_idx:]
+        p_space = y_pred[:,:,ceres_band_cutoff_idx:]
+        ## MSE independently for spatial and lw/sw predictions
+        L_space = tf.math.reduce_mean(tf.square(t_space-p_space))
+
+        ## Average all of the sequence outputs to get the prediction
+        ## CERES bands are just copied along ax0
+        t_bands = y_true[:,0,:ceres_band_cutoff_idx]
+        ## Predicted bands should vary
+        p_bands = y_pred[:,:,:ceres_band_cutoff_idx]
+        ## Take the average of all model predictions in the footprint
+        p_bands = tf.math.reduce_mean(p_bands, axis=1)
+        L_bands = tf.math.reduce_mean(tf.square(t_bands-p_bands))
+
+        return band_ratio*L_bands+(1-band_ratio)*L_space ## lstmed_2
+    return agg_loss
+
+
+def ceres_generator(modis_zarr_path, ceres_zarr_path, seed,
+        modis_band_idxs, modis_space_idxs, ceres_feature_idxs):
+    """
+    Generator for data to upsample modis to ceres resolution
+    """
+    modis = zarr.open(modis_zarr_path.decode('ASCII'), mode="r")
+    ceres = zarr.open(ceres_zarr_path.decode('ASCII'), mode="r")
+    #modis = zarr.open(modis_zarr_path, mode="r")
+    #ceres = zarr.open(ceres_zarr_path, mode="r")
+    idxs = np.arange(modis.shape[0])
+    np.random.default_rng(seed).shuffle(idxs)
+    for i in idxs:
+        tmpx = modis[i]
+        ## note the reliance on the fact that modis bands must uniformly
+        ## precede the spatial components. In other words, the feature
+        ## order that the encoder was trained on must be equivalent to
+        ## modis_band_idxs + modis_space_idxs
+        X = tmpx[...,list(modis_band_idxs)+list(modis_space_idxs)]
+        #tmpy = np.copy(tmpx)[:,::-1]
+        tmpy = ceres[i]
+        ## Ceres fluxes only
+        tmpy = np.tile(tmpy[...,ceres_feature_idxs], (X.shape[0],1))
+        ## Append the spatial information to the ceres fluxes
+        ## Still flipping the output for consistency
+        Y = np.hstack((tmpy, tmpx[...,modis_space_idxs]))[:,::-1]
+        yield tuple(map(tf.convert_to_tensor, (X, Y)))
 
 def shuffle_generator(zarr_path, seed, feature_idxs):
     """

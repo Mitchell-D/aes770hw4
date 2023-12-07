@@ -1,0 +1,3 @@
+MSE for reproducing CERES data only; no spatial learning.
+
+uses lstmae_1_9_0.19.hdf5 encoder

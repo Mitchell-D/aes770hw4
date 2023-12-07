@@ -1,0 +1,9 @@
+70% band loss;
+
+no dropout;
+
+3x64 node lstm layers;
+
+no dropout
+
+based on lstmae_1.keras

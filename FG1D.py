@@ -1,4 +1,4 @@
-import netCDF4 as nc
+#import netCDF4 as nc
 import gc
 import numpy as np
 from pathlib import Path
@@ -7,8 +7,6 @@ from datetime import datetime
 from datetime import timedelta
 import matplotlib.pyplot as plt
 
-from scipy.interpolate import griddata
-from scipy.interpolate import NearestNDInterpolator
 from scipy.stats import linregress
 #from sklearn.linear_model import LinearRegression
 
@@ -175,7 +173,7 @@ class FG1D:
         """ """
         ps = {"xlabel":xlabel, "ylabel":ylabel, "marker_size":4,
               "cmap":"nipy_spectral", "text_size":12, "title":clabel,
-              "norm":"linear","figsize":(12,12)}
+              "norm":None,"figsize":(12,12)}
         plt.clf()
         ps.update(plot_spec)
 

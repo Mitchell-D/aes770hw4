@@ -8,13 +8,13 @@
 #SBATCH -J eval_lstmae
 
 ### TOTAL processors (number of tasks)
-#SBATCH --ntasks 2
+#SBATCH --ntasks 8
 
 ### total run time estimate (D-HH:MM)
 #SBATCH -t 0-06:00
 
 ### memory (MB per CPU)
-#SBATCH --mem-per-cpu=32G
+#SBATCH --mem-per-cpu=24G
 
 ### Mail to user on job done and fail
 #SBATCH --mail-type=END,FAIL
@@ -26,5 +26,7 @@
 cd /rhome/mdodson/aes770hw4
 
 set runcmd = /rhome/mdodson/.conda/envs/learn/bin/python
+#set runcmd = /rhome/mdodson/.conda/envs/aes/bin/python
 
-${runcmd} -u lstm_eval.py
+##${runcmd} -u lstm_eval.py
+${runcmd} -u get_model_swaths.py
