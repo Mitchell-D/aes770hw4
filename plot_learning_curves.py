@@ -39,8 +39,9 @@ if __name__=="__main__":
         #ax.plot(cdict["epoch"][i], cdict["val_loss"][i], label=models[i],
         ax.plot(cdict["epoch"][i], cdict["loss"][i], label=models[i]+" loss",
                 color=color, linestyle="solid",linewidth=1)
-        ax.plot(cdict["epoch"][i], cdict["val_loss"][i], label=models[i]+" val_loss",
-                color=color, linestyle="dashed", linewidth=1)
+        ax.plot(cdict["epoch"][i], cdict["val_loss"][i],
+                label=models[i]+" val_loss", color=color,
+                linestyle="dashed", linewidth=1)
     ax.legend(ncol=2)
     ax.set_ylim([0,.35])
     #ax.set_title("Validation MSE Learning Curve")
