@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Arch Linux)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: out/main.aux
+The style file: ieeetr.bst
+Database file #1: main.bib
+Warning--empty school in house_radiation_1965
+You've used 29 entries,
+            1876 wiz_defined-function locations,
+            670 strings with 11321 characters,
+and the built_in function-call counts, 8865 in all, are:
+= -- 879
+> -- 480
+< -- 0
++ -- 171
+- -- 142
+* -- 668
+:= -- 1293
+add.period$ -- 55
+call.type$ -- 29
+change.case$ -- 27
+chr.to.int$ -- 0
+cite$ -- 30
+duplicate$ -- 378
+empty$ -- 694
+format.name$ -- 142
+if$ -- 2108
+int.to.chr$ -- 0
+int.to.str$ -- 29
+missing$ -- 21
+newline$ -- 117
+num.names$ -- 29
+pop$ -- 69
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 348
+stack$ -- 0
+substring$ -- 537
+swap$ -- 195
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 74
+width$ -- 31
+write$ -- 317
+(There was 1 warning)
