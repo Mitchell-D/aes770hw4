@@ -47,6 +47,10 @@ def single_swath_mask(z_ceres, epoch_feat_idx):
 
 def swath_to_pkl(model_path, ceres_zarr_path, modis_zarr_path,
         idx0, idxf, out_dir):
+    ## Indeces of features to train on
+    modis_band_idxs = (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
+    modis_space_idxs = (19,20,21,22,23,24)
+
     ## Retrieve the encoder from the model
     agg_loss = get_agg_loss(band_ratio=.7, ceres_band_cutoff_idx=2)
     model = tf.keras.models.load_model(
@@ -123,23 +127,14 @@ if __name__=="__main__":
 
     ## Directory with sub-directories for each model.
     model_parent_dir = Path("data/models/")
-    ed_path = model_parent_dir.joinpath("lstmed_4/lstmed_4_93.hdf5")
-    swath_out_dir = Path("/rstor/mdodson/aes770hw4/output")
+    #ed_path = model_parent_dir.joinpath("lstmed_4/lstmed_4_93.hdf5")
+    ed_path = model_parent_dir.joinpath("lstmed_1/lstmed_1.keras")
+    swath_out_dir = Path("/rstor/mdodson/aes770hw4/output_1")
 
     workers = 8
     ## Seed for subsampling training and validation data
     rand_seed = 20231121
-    ## Indeces of features to train on
-    modis_band_idxs = (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
-    modis_space_idxs = (19,20,21,22,23,24)
     ceres_feat_idxs = (5,6) ## (swflux, lwflux)
 
     mp_swath_to_pkl(ed_path, ceres_test_path, modis_test_path,
             swath_out_dir, workers)
-
-    '''
-    coarse.geo_scatter("sw", fig_path=Path("figures/ceres_sw.png"))
-    coarse.geo_scatter("lw", fig_path=Path("figures/ceres_lw.png"))
-    pfine.geo_scatter("sw", fig_path=Path("figures/fine_sw.png"))
-    pfine.geo_scatter("lw", fig_path=Path("figures/fine_lw.png"))
-    '''
