@@ -4,45 +4,45 @@ The top-level auxiliary file: out/main.aux
 The style file: ieeetr.bst
 Database file #1: main.bib
 Warning--empty school in house_radiation_1965
-You've used 29 entries,
+You've used 32 entries,
             1876 wiz_defined-function locations,
-            670 strings with 11321 characters,
-and the built_in function-call counts, 8865 in all, are:
-= -- 879
-> -- 480
+            685 strings with 12082 characters,
+and the built_in function-call counts, 9743 in all, are:
+= -- 975
+> -- 504
 < -- 0
-+ -- 171
-- -- 142
-* -- 668
-:= -- 1293
-add.period$ -- 55
-call.type$ -- 29
-change.case$ -- 27
++ -- 180
+- -- 148
+* -- 722
+:= -- 1406
+add.period$ -- 60
+call.type$ -- 32
+change.case$ -- 30
 chr.to.int$ -- 0
-cite$ -- 30
-duplicate$ -- 378
-empty$ -- 694
-format.name$ -- 142
-if$ -- 2108
+cite$ -- 33
+duplicate$ -- 431
+empty$ -- 773
+format.name$ -- 148
+if$ -- 2332
 int.to.chr$ -- 0
-int.to.str$ -- 29
-missing$ -- 21
-newline$ -- 117
-num.names$ -- 29
-pop$ -- 69
+int.to.str$ -- 32
+missing$ -- 24
+newline$ -- 128
+num.names$ -- 32
+pop$ -- 78
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 348
+skip$ -- 394
 stack$ -- 0
-substring$ -- 537
-swap$ -- 195
+substring$ -- 591
+swap$ -- 222
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
-while$ -- 74
-width$ -- 31
-write$ -- 317
+while$ -- 82
+width$ -- 34
+write$ -- 350
 (There was 1 warning)

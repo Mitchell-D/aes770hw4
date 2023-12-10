@@ -171,7 +171,8 @@ As a final piece of context, all of the above machine learning model varieties c
     \caption{MODIS bands used as input features for model training.}
 \end{wrapfigure}
 
-Throughout this project I aim to develop and compare a series of autoencoder networks based on the LSTM and transformer architectures which will initially learn to reproduce the spatial and spectral features from MODIS pixels embedded in a circular domain surrounding the center of CERES footprints.
+Throughout this project I aim to develop and compare a series of autoencoder networks based on the LSTM and transformer architectures which will initially learn to reproduce the spatial and spectral features from MODIS pixels embedded in a circular domain surrounding the center of CERES footprints. In each case, this will be accomplished using a progressive masking strategy by which two encoders will be separately trained for each architecture. The first will encourage the training process to learn to make spatial generalizations within the receptive areas by interpolating onto an increasing number of masked sequence elements, and the second will similarly learn to interpolate spectral features within individual samples by randomly masking an increasing number of bands. Once the models prove skillful in re-generating the input sequence, the latent vector outputs will be concatenated, and a new decoder head will be trained to output separate shortwave and longwave flux values corresponding to each pixel, optimizing the similarity between the average of all pixels in the sequence and the flux values from the corresponding CERES footprint. This approach is similar in spirit to several recent papers  which show that employing dual-branch spatial and spectral modules make autoencoder-like architectures more robust for hyperspectral classification and segmentation tasks. \cite{praveen_novel_2019}\cite{praveen_bidirectional_2022}\cite{praveen_dual-branch-attentionnet_2022}
+
 
 \begin{enumerate}[itemsep=0pt, parsep=0pt, before=\setlength{\baselineskip}{6mm}]
     \item Download MODIS L1b imager data and CERES SSF longwave and shortwave fluxes for 2015, 2017, 2019, and 2021 within a region covering the South East US.
@@ -181,7 +182,7 @@ Throughout this project I aim to develop and compare a series of autoencoder net
     \item Gauss-normalize all in-range data and collect it into memory-mapped arrays for training and validation data.
     \item Train an LSTM based autoencoder model to reproduce a sequence of up to K of the nearest imager pixels, optimizing for spatial interpolation by sparsely masking sequence elements.
     \item Train an LSTM based autoencoder model optimizing for spectral interpolation by masking feature elements.
-    \item Develop a decoder head that converts the latent-space output of both above models into an estimate of the longwave and shortwave flux contribution of each MODIS pixel, using a custom loss function that compares the spatial average of pixel values to the bulk CERES footprint values for flux.
+    \item Develop a decoder head that converts the combined latent-space output of both above models into an estimate of the longwave and shortwave flux contribution of each MODIS pixel, using a custom loss function that compares the spatial average of pixel values to the bulk CERES footprint values for flux.
     \item Repeat steps 6-8 using the same dataset and training strategy, except using a transformer architecture.
 \end{enumerate}
 

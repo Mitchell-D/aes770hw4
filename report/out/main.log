@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.8.28)  9 DEC 2023 22:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.8.28)  10 DEC 2023 08:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -706,53 +706,18 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [4 <./figs/schematic.png>]
-Underfull \hbox (badness 4595) in paragraph at lines 174--175
-[]\OT1/cmr/m/n/12 During the pro-cess of this
+Underfull \hbox (badness 1430) in paragraph at lines 174--175
+\OT1/cmr/m/n/12 ries of au-toen-coder net-works
  []
 
 
-Underfull \hbox (badness 1226) in paragraph at lines 174--175
-\OT1/cmr/m/n/12 and trans-former ar-chi-tec-tures
+Underfull \hbox (badness 2073) in paragraph at lines 174--175
+\OT1/cmr/m/n/12 spa-tial and spec-tral fea-tures
  []
 
 
-Underfull \hbox (badness 4181) in paragraph at lines 177--178
-[]\OT1/cmr/m/n/12 Download MODIS L1b
- []
-
-
-Underfull \hbox (badness 8094) in paragraph at lines 177--178
-\OT1/cmr/m/n/12 wave fluxes for 2015,
- []
-
-
-Underfull \hbox (badness 4391) in paragraph at lines 177--178
-\OT1/cmr/m/n/12 2017, 2019, and 2021
- []
-
-
-Underfull \hbox (badness 1348) in paragraph at lines 178--179
-[]\OT1/cmr/m/n/12 For each of N CERES
- []
-
-
-Underfull \hbox (badness 1527) in paragraph at lines 178--179
-\OT1/cmr/m/n/12 foot-prints in a satel-lite
- []
-
-
-Overfull \hbox (15.43338pt too wide) in paragraph at lines 179--180
-[]\OT1/cmr/m/n/12 Store each swath as a (N,1,C)
- []
-
-
-Overfull \hbox (6.38785pt too wide) in paragraph at lines 179--180
-\OT1/cmr/m/n/12 ar-ray of C CERES fea-tures,
- []
-
-
-Overfull \hbox (9.25716pt too wide) in paragraph at lines 179--180
-\OT1/cmr/m/n/12 MODIS fea-tures, each along
+Underfull \hbox (badness 1389) in paragraph at lines 174--175
+\OT1/cmr/m/n/12 gres-sive mask-ing strat-egy by
  []
 
 
@@ -764,70 +729,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [5]
-Overfull \hbox (8.84456pt too wide) in paragraph at lines 180--181
-\OT1/cmr/m/n/12 side of the ac-cept-able range.
- []
-
-
-Overfull \hbox (11.92787pt too wide) in paragraph at lines 181--182
-[]\OT1/cmr/m/n/12 Gauss-normalize all in-range
- []
-
-
-Overfull \hbox (28.6888pt too wide) in paragraph at lines 181--182
-\OT1/cmr/m/n/12 data and col-lect it into memory-
- []
-
-
-Overfull \hbox (2.31685pt too wide) in paragraph at lines 182--183
-\OT1/cmr/m/n/12 re-pro-duce a se-quence of up
- []
-
-
-Overfull \hbox (6.23347pt too wide) in paragraph at lines 182--183
-\OT1/cmr/m/n/12 tial in-ter-po-la-tion of masked
- []
-
-
-Overfull \hbox (4.92793pt too wide) in paragraph at lines 182--183
-\OT1/cmr/m/n/12 val-ues within the 400px do-
- []
-
-
-Overfull \hbox (0.94603pt too wide) in paragraph at lines 183--184
-\OT1/cmr/m/n/12 toen-coder ar-chi-tec-ture op-
- []
-
-
-Overfull \hbox (10.57233pt too wide) in paragraph at lines 184--186
-[]\OT1/cmr/m/n/12 Develop a de-coder head that
- []
-
-
-Overfull \hbox (2.25157pt too wide) in paragraph at lines 184--186
-\OT1/cmr/m/n/12 out-put of both above mod-
- []
-
-
-Overfull \hbox (11.12926pt too wide) in paragraph at lines 184--186
-\OT1/cmr/m/n/12 long-wave and short-wave flux
- []
-
-
-Overfull \hbox (10.564pt too wide) in paragraph at lines 184--186
-\OT1/cmr/m/n/12 con-tri-bu-tion of each MODIS
- []
-
-
-Overfull \hbox (3.62239pt too wide) in paragraph at lines 184--186
-\OT1/cmr/m/n/12 func-tion that com-pares the
- []
-
-
-Overfull \hbox (6.06276pt too wide) in paragraph at lines 184--186
-\OT1/cmr/m/n/12 CERES foot-print val-ues for
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -885,22 +786,22 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 0F2F13D6E2E69B206F848F4F849C20F2;711.
  ) 
 Here is how much of TeX's memory you used:
- 15908 strings out of 477985
- 299705 string characters out of 5840058
+ 15914 strings out of 477985
+ 299888 string characters out of 5840058
  1870388 words of memory out of 5000000
- 35859 multiletter control sequences out of 15000+600000
+ 35862 multiletter control sequences out of 15000+600000
  518504 words of font info for 55 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,77p,1839b,1048s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,77p,1839b,1018s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cms
 y10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on out/main.pdf (9 pages, 2299826 bytes).
+Output written on out/main.pdf (9 pages, 2302539 bytes).
 PDF statistics:
- 185 PDF objects out of 1000 (max. 8388607)
- 154 compressed objects within 2 object streams
- 55 named destinations out of 1000 (max. 500000)
+ 191 PDF objects out of 1000 (max. 8388607)
+ 160 compressed objects within 2 object streams
+ 58 named destinations out of 1000 (max. 500000)
  53 words of extra memory for PDF output out of 10000 (max. 10000000)
 

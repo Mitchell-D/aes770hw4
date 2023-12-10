@@ -193,4 +193,23 @@ L.~M. Gao and J.~N. Kutz, ``Bayesian autoencoders for data-driven discovery of
   coordinates, governing equations and fundamental constants,'' Nov. 2022.
 \newblock arXiv:2211.10575 [cs, stat].
 
+\bibitem{praveen_novel_2019}
+B.~Praveen and V.~Menon, ``Novel {Deep}-{Learning}-{Based} {Spatial}-{Spectral}
+  {Feature} {Extraction} {For} {Hyperspectral} {Remote} {Sensing}
+  {Applications},'' in {\em 2019 {IEEE} {International} {Conference} on {Big}
+  {Data} ({Big} {Data})}, pp.~5444--5452, Dec. 2019.
+
+\bibitem{praveen_bidirectional_2022}
+B.~Praveen and V.~Menon, ``A {Bidirectional} {Deep}-{Learning}-{Based}
+  {Spectral} {Attention} {Mechanism} for {Hyperspectral} {Data}
+  {Classification},'' {\em Remote Sensing}, vol.~14, p.~217, Jan. 2022.
+\newblock Number: 1 Publisher: Multidisciplinary Digital Publishing Institute.
+
+\bibitem{praveen_dual-branch-attentionnet_2022}
+B.~Praveen and V.~Menon, ``Dual-{Branch}-{AttentionNet}: {A} {Novel}
+  {Deep}-{Learning}-{Based} {Spatial}-{Spectral} {Attention} {Methodology} for
+  {Hyperspectral} {Data} {Analysis},'' {\em Remote Sensing}, vol.~14, p.~3644,
+  Jan. 2022.
+\newblock Number: 15 Publisher: Multidisciplinary Digital Publishing Institute.
+
 \end{thebibliography}
